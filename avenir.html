@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se questionner sur l'avenir - Le Labo des Curieux</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
+
+        :root {
+            --bg-avenir: #083344; /* Fond bleu cyan très profond */
+            --text-light: #f1f5f9;
+            --accent-cyan: #06b6d4;
+            --drawer-bg: #155e75;
+            --card-hover-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-avenir);
+            color: var(--text-light);
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid var(--accent-cyan);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-avenir);
+        }
+
+        .grid-avenir {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-ave {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .card-ave:hover {
+            transform: translateY(-5px);
+            background: var(--card-hover-bg);
+        }
+
+        .card-ave img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: brightness(80%);
+            transition: 0.5s;
+        }
+
+        .card-ave:hover img {
+            filter: brightness(100%) scale(1.03);
+        }
+
+        .card-ave-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-ave-content h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card-ave-content p {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* --- PANNEAU COULISSANT (DRAWER) --- */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100vh;
+            background-color: var(--drawer-bg);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-avenir);
+            border-color: var(--accent-cyan);
+        }
+
+        .drawer-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-cyan);
+            margin: 20px 0 30px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .questions-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .question-item {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideInQuestion 0.4s ease forwards;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        @keyframes slideInQuestion {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+            z-index: 999;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
+
+    <header>
+        <h1>Se questionner sur l'avenir 🔮</h1>
+        <p>Demain est un mystère en construction. Découvre les énigmes du temps, de la chance et des chemins tracés.</p>
+    </header>
+
+    <main class="grid-avenir">
+        
+        <div class="card-ave" data-topic="hasard">
+            <img src="https://images.unsplash.com/photo-1570303345338-e69a34a2d426?auto=format&fit=crop&w=600&q=80" alt="Dés ou hasard">
+            <div class="card-ave-content">
+                <h2>Le hasard</h2>
+                <p>Est-ce que la chance existe vraiment ou obéit-elle à des règles mathématiques cachées ?</p>
+            </div>
+        </div>
+
+        <div class="card-ave" data-topic="prophetie">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=80" alt="Ciel étoilé ou prédictions">
+            <div class="card-ave-content">
+                <h2>La prophétie</h2>
+                <p>Peut-on réellement lire dans les étoiles ou l'esprit pour devancer le temps ?</p>
+            </div>
+        </div>
+
+        <div class="card-ave" data-topic="predestination">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80" alt="Réseaux de connexions informatiques ou lignes trancées">
+            <div class="card-ave-content">
+                <h2>La prédestination</h2>
+                <p>Si tout est écrit d'avance, sommes-nous vraiment libres de nos choix moraux ?</p>
+            </div>
+        </div>
+
+        <div class="card-ave" data-topic="destin">
+            <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=600&q=80" alt="Chemin mystérieux dans la forêt">
+            <div class="card-ave-content">
+                <h2>Le destin</h2>
+                <p>Existe-t-il une force invisible guidant nos pas vers une destination précise ?</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- --- LE PANNEAU LATÉRAL --- -->
+    <div class="drawer" id="drawer">
+        <button class="close-btn" id="close-btn">Fermer ✖</button>
+        <h2 class="drawer-title" id="drawer-title">Thème de l'avenir</h2>
+        <ul class="questions-list" id="questions-list">
+            <!-- Les questions s'insèrent ici dynamiquement -->
+        </ul>
+    </div>
+
+    <!-- --- LOGIQUE JAVASCRIPT --- -->
+    <script>
+        const questionsData = {
+            hasard: {
+                title: "Le hasard 🎲",
+                questions: [
+                    "🎲 Si on lançait un dé exactement de la même façon avec la même force, ferait-il toujours le même score ?",
+                    "🍀 Trouver un trèfle à quatre feuilles change-t-il l'avenir ou seulement notre attention ?",
+                    "🔗 Une coïncidence surprenante est-elle magique ou juste une probabilité mathématique ?",
+                    "🌀 Si le hasard a créé le monde, pourquoi la nature semble-t-elle si bien organisée ?",
+                    "🌪️ Peut-on prévoir l'avenir d'un coup de vent, ou est-ce définitivement chaotique ?",
+                    "💬 Rencontrer son meilleur ami dans la rue par surprise, est-ce un coup du hasard ?",
+                    "🎰 Les jeux de hasard sont-ils inventés pour tester notre chance ou pour nous faire perdre ?",
+                    "👣 Si tu lances une pièce pour prendre une décision, est-ce une preuve de liberté ou d'abandon ?",
+                    "🍂 Est-ce que les feuilles des arbres tombent au hasard ou suivent-elles une géométrie secrète ?",
+                    "🧠 Notre cerveau déteste-t-il le hasard au point de chercher des explications partout ?"
+                ]
+            },
+            prophetie: {
+                title: "La prophétie 🔮",
+                questions: [
+                    "📜 Si une prophétie annonce une catastrophe, la raconter sert-elle à l'éviter ou à la provoquer ?",
+                    "🔮 Comment les devins du passé pouvaient-ils imaginer notre monde technologique actuel ?",
+                    "🌠 Les étoiles bougent-elles pour nous dire notre avenir ou vivent-elles simplement leur vie ?",
+                    "💭 Faire un rêve qui se réalise le lendemain, est-ce une coïncidence ou une intuition ?",
+                    "🃏 Pourquoi les prédictions des voyants restent-elles souvent très floues ou mystérieuses ?",
+                    "⏳ Si on connaissait précisément l'heure de notre mort, vivrait-on plus intensément ?",
+                    "📖 Les livres anciens contenant des prédictions cachent-ils des codes secrets ?",
+                    "🤖 Les ordinateurs et l'intelligence artificielle sont-ils les nouveaux prophètes de notre siècle ?",
+                    "🦅 Les animaux qui ressentent les séismes à l'avance ont-ils un don de prophétie ?",
+                    "🎭 Croire en une prédiction heureuse suffit-il à lui donner la force de se réaliser ?"
+                ]
+            },
+            predestination: {
+                title: "La prédestination ⛓️",
+                questions: [
+                    "🧩 Si une force supérieure sait déjà ce que tu vas manger demain, as-tu réellement le choix ?",
+                    "⛓️ Sommes-nous prisonniers d'un scénario écrit avant même notre naissance ?",
+                    "⚖️ Si un criminel était prédestiné à agir ainsi, est-il juste de le punir ?",
+                    "🧬 Nos gènes et notre éducation écrivent-ils notre avenir à notre place ?",
+                    "🗺️ Peut-on s'enfuir et échapper à une trajectoire de vie qui nous était tracée ?",
+                    "💡 Si tout est programmé à l'avance, à quoi sert-il de faire des efforts pour s'améliorer ?",
+                    "🎬 Notre univers fonctionne-t-il comme un film déjà enregistré qu'on ne fait que visionner ?",
+                    "🤝 Si deux personnes s'adorent, étaient-elles programmées pour se croiser depuis toujours ?",
+                    "🛑 La prédestination efface-t-elle le concept de mérite personnel ?",
+                    "🧐 Comment faire la différence entre une vie subie et une vie choisie ?"
+                ]
+            },
+            destin: {
+                title: "Le destin 🛣️",
+                questions: [
+                    "🛣️ Le destin est-il une route toute tracée, ou un ensemble de chemins à construire ?",
+                    "⛵ Sommes-nous les capitaines de notre vie ou de simples passagers portés par le vent ?",
+                    "💥 Rater un train qui déraille plus loin, est-ce un coup de chance ou un signe du destin ?",
+                    "🔍 Pourquoi ressent-on parfois le sentiment étrange d'être exactement là où l'on doit être ?",
+                    "🏹 Le destin s'occupe-t-il des grandes étapes de notre vie ou choisit-il aussi les petits détails ?",
+                    "🌋 Dire 'c'était mon destin' après un échec, est-ce une consolation ou une vérité ?",
+                    "💎 Est-ce que notre destin dépend de notre caractère et de nos choix profonds ?",
+                    "🌌 L'univers a-t-il un plan global dans lequel chacun d'entre nous joue un rôle précis ?",
+                    "🕯️ Peut-on changer de destin en changeant simplement d'attitude face aux autres ?",
+                    "✨ Le plus beau dans le destin, n'est-ce pas le fait qu'il reste totalement secret ?"
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-ave');
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('close-btn');
+            const drawerTitle = document.getElementById('drawer-title');
+            const questionsList = document.getElementById('questions-list');
+
+            function openDrawer(topicKey) {
+                const data = questionsData[topicKey];
+                if (!data) return;
+
+                drawerTitle.textContent = data.title;
+                questionsList.innerHTML = '';
+
+                data.questions.forEach((q, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'question-item';
+                    li.textContent = q;
+                    li.style.animationDelay = `${index * 0.05}s`;
+                    questionsList.appendChild(li);
+                });
+
+                drawer.classList.add('open');
+                overlay.classList.add('visible');
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const topic = card.getAttribute('data-topic');
+                    openDrawer(topic);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeDrawer);
+            overlay.addEventListener('click', closeDrawer);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDrawer();
+            });
+        });
+    </script>
+</body>
+</html>
