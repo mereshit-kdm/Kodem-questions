@@ -15,6 +15,7 @@
             --accent-green: #6ee7b7;
             --accent-world: #ff9f43;
             --accent-cyan: #06b6d4;
+            --accent-pink: #f43f5e;
             --card-bg: rgba(255, 255, 255, 0.05);
             --card-hover-bg: rgba(255, 255, 255, 0.08);
         }
@@ -114,6 +115,11 @@
             border-color: var(--accent-cyan);
         }
 
+        .category-card.aut-theme:hover {
+            box-shadow: 0 15px 30px rgba(244, 63, 94, 0.15);
+            border-color: var(--accent-pink);
+        }
+
         .card-image-wrapper {
             position: relative;
             width: 100%;
@@ -153,6 +159,7 @@
         .soi-theme .card-body h2 { color: var(--accent-green); }
         .world-theme .card-body h2 { color: var(--accent-world); }
         .ave-theme .card-body h2 { color: var(--accent-cyan); }
+        .aut-theme .card-body h2 { color: var(--accent-pink); }
 
         .card-body p {
             font-size: 1rem;
@@ -173,7 +180,7 @@
 
     <header>
         <h1>Le Labo des <span>Curieux</span> 🧪</h1>
-        <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères du monde, de l'univers, de ton esprit et du temps.</p>
+        <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères du monde, de l'invisible, de ton esprit et des relations humaines.</p>
     </header>
 
     <main class="grid-categories">
@@ -230,6 +237,17 @@
             <div class="card-body">
                 <h2>Se questionner sur l'avenir 🔮</h2>
                 <p>Interroge demain et l'inconnu : le rôle du hasard, le mystère des prophéties et la force du destin.</p>
+            </div>
+        </a>
+
+        <!-- CARTE : SE QUESTIONNER SUR L'AUTRE -->
+        <a href="autre.html" class="category-card aut-theme">
+            <div class="card-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80" alt="Relations humaines et partage">
+            </div>
+            <div class="card-body">
+                <h2>Se questionner sur l'autre 👥</h2>
+                <p>Explore les mystères de l'empathie, la complexité du vivre-ensemble et les secrets des liens familiaux.</p>
             </div>
         </a>
 
