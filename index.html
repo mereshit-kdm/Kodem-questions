@@ -3,22 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Labo des Curieux - Questions Philosophiques</title>
+    <title>Le Labo des Curieux - Accueil</title>
     <style>
-        /* --- STYLE GÉNÉRAL & POLICES --- */
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
 
         :root {
-            --bg-color: #f7f9fc;
-            --text-color: #2d3748;
-            --primary: #6c5ce7;
-            --primary-light: #a29bfe;
-            --accent-moi: #ff7675;
-            --accent-monde: #74b9ff;
-            --accent-avenir: #00cec9;
-            --accent-autre: #ffb142;
-            --accent-audela: #a29bfe;
-            --accent-invisible: #8e44ad;
+            --bg-labo: #0f172a; /* Fond sombre général */
+            --text-light: #f1f5f9;
+            --accent-purple: #a29bfe;
+            --accent-cosmic: #b39ddb;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-hover-bg: rgba(255, 255, 255, 0.08);
         }
 
         * {
@@ -29,321 +24,167 @@
 
         body {
             font-family: 'Lexend', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            background-color: var(--bg-labo);
+            color: var(--text-light);
             padding: 20px;
-            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         header {
             text-align: center;
-            padding: 40px 20px;
+            padding: 60px 20px 40px 20px;
             max-width: 800px;
-            margin: 0 auto;
         }
 
-        h1 {
+        header h1 {
             font-family: 'Fredoka', sans-serif;
-            font-size: 3rem;
-            color: var(--primary);
-            margin-bottom: 15px;
+            font-size: 3.8rem;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        .subtitle {
+        header h1 span {
+            color: var(--accent-purple);
+        }
+
+        header p {
             font-size: 1.2rem;
-            color: #718096;
+            color: #cbd5e1;
+            line-height: 1.6;
         }
 
-        /* --- FILTRES (BOUTONS) --- */
-        .filter-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 12px;
-            margin: 30px 0;
-        }
-
-        .filter-btn {
-            font-family: 'Fredoka', sans-serif;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 50px;
-            background: white;
-            color: var(--text-color);
-            font-size: 1.05rem;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: all 0.3s ease;
-        }
-
-        .filter-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-        }
-
-        .filter-btn.active {
-            background-color: var(--primary);
-            color: white;
-        }
-
-        /* Couleurs spécifiques pour le survol/actif des catégories */
-        .filter-btn[data-cat="moi"].active, .filter-btn[data-cat="moi"]:hover { background-color: var(--accent-moi); color: white; }
-        .filter-btn[data-cat="monde"].active, .filter-btn[data-cat="monde"]:hover { background-color: var(--accent-monde); color: white; }
-        .filter-btn[data-cat="avenir"].active, .filter-btn[data-cat="avenir"]:hover { background-color: var(--accent-avenir); color: white; }
-        .filter-btn[data-cat="autre"].active, .filter-btn[data-cat="autre"]:hover { background-color: var(--accent-autre); color: white; }
-        .filter-btn[data-cat="audela"].active, .filter-btn[data-cat="audela"]:hover { background-color: var(--accent-audela); color: white; }
-        .filter-btn#btn-invisible { border: 2px dashed var(--accent-invisible); color: var(--accent-invisible); }
-        .filter-btn#btn-invisible:hover { background-color: var(--accent-invisible); color: white; border-style: solid; }
-
-        /* --- GRILLE DE CARTES --- */
-        .questions-grid {
+        .grid-categories {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            max-width: 900px;
+            width: 100%;
+            margin: 20px auto;
+            padding: 20px;
         }
 
-        .card {
-            background: white;
-            border-radius: 24px;
+        .category-card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 35px;
             overflow: hidden;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s, background-color 0.3s;
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
-        .card:hover {
+        .category-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            background: var(--card-hover-bg);
         }
 
-        .card-img-wrapper {
+        /* Styles spécifiques pour la carte Invisible */
+        .category-card.inv-theme:hover {
+            box-shadow: 0 15px 30px rgba(162, 155, 254, 0.2);
+            border-color: var(--accent-purple);
+        }
+
+        /* Styles spécifiques pour la carte Au-delà */
+        .category-card.aud-theme:hover {
+            box-shadow: 0 15px 30px rgba(179, 157, 219, 0.2);
+            border-color: var(--accent-cosmic);
+        }
+
+        .card-image-wrapper {
             position: relative;
-            height: 200px;
+            width: 100%;
+            height: 240px;
             overflow: hidden;
         }
 
-        .card-img {
+        .category-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             transition: transform 0.5s ease;
         }
 
-        .card:hover .card-img {
-            transform: scale(1.08);
+        .category-card:hover img {
+            transform: scale(1.05);
         }
 
-        .badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: bold;
-            color: white;
-            font-family: 'Fredoka', sans-serif;
-        }
-
-        .card-content {
-            padding: 25px;
+        .card-body {
+            padding: 30px;
+            text-align: center;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
+            justify-content: center;
         }
 
-        .question-text {
+        .card-body h2 {
             font-family: 'Fredoka', sans-serif;
-            font-size: 1.4rem;
-            line-height: 1.4;
-            margin-bottom: 15px;
-            color: #1a202c;
+            font-size: 2rem;
+            margin-bottom: 12px;
+            transition: color 0.3s;
         }
 
-        .pense-bete {
+        .inv-theme .card-body h2 { color: var(--accent-purple); }
+        .aud-theme .card-body h2 { color: var(--accent-cosmic); }
+
+        .card-body p {
+            font-size: 1.05rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        footer {
+            margin-top: auto;
+            padding: 40px 20px 20px 20px;
             font-size: 0.9rem;
-            color: #718096;
-            font-style: italic;
-            border-left: 3px solid #e2e8f0;
-            padding-left: 10px;
-        }
-
-        /* Couleurs des Badges */
-        .cat-moi { background-color: var(--accent-moi); }
-        .cat-monde { background-color: var(--accent-monde); }
-        .cat-avenir { background-color: var(--accent-avenir); }
-        .cat-autre { background-color: var(--accent-autre); }
-        .cat-audela { background-color: var(--accent-audela); }
-
-        /* Animation d'apparition */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .card {
-            animation: fadeIn 0.5s ease forwards;
+            color: #64748b;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Le Labo des Curieux 🧠✨</h1>
-        <p class="subtitle">Le site où les questions n'ont pas peur des réponses. Destiné aux enfants, aux sages, aux philosophes et à tous ceux qui se demandent "Pourquoi ?".</p>
+        <h1>Le Labo des <span>Curieux</span> 🧪</h1>
+        <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers et de l'esprit.</p>
     </header>
 
-    <!-- Zone des Filtres -->
-    <div class="filter-container">
-        <button class="filter-btn active" data-cat="all">Tout explorer 🚀</button>
-        <button class="filter-btn" data-cat="moi">Se questionner sur moi-même 🦸‍♂️</button>
-        <button class="filter-btn" data-cat="monde">Se questionner sur le monde 🌍</button>
-        <button class="filter-btn" data-cat="avenir">Se questionner sur l'avenir 🤖</button>
-        <button class="filter-btn" data-cat="autre">Se questionner sur l'autre 🤝</button>
-        <button class="filter-btn" data-cat="audela">Se questionner sur l'au-delà 🌌</button>
-        <button class="filter-btn" id="btn-invisible">Se questionner sur l'invisible 👻</button>
-    </div>
+    <main class="grid-categories">
 
-    <!-- Grille des Questions -->
-    <main class="questions-grid" id="questions-grid">
-        
-        <!-- SUR MOI-MÊME -->
-        <div class="card" data-category="moi">
-            <div class="card-img-wrapper">
-                <span class="badge cat-moi">Sur moi-même</span>
-                <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=500&q=80" alt="Moi" class="card-img">
+        <!-- CARTE : L'INVISIBLE -->
+        <a href="invisible.html" class="category-card inv-theme">
+            <div class="card-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1516331138075-f3ad16d69762?auto=format&fit=crop&w=600&q=80" alt="Mystère de l'invisible">
             </div>
-            <div class="card-content">
-                <p class="question-text">Est-ce que mes pensées ont une couleur ou un poids ?</p>
-                <p class="pense-bete">💡 Réfléchis : Si tu fermes les yeux, où se cache ton imagination ?</p>
+            <div class="card-body">
+                <h2>L'Invisible ✨</h2>
+                <p>Explore ce que nos yeux ne perçoivent pas : de l'infiniment petit aux forces sacrées ou secrètes.</p>
             </div>
-        </div>
+        </a>
 
-        <div class="card" data-category="moi">
-            <div class="card-img-wrapper">
-                <span class="badge cat-moi">Sur moi-même</span>
-                <img src="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?auto=format&fit=crop&w=500&q=80" alt="Miroir" class="card-img">
+        <!-- CARTE : SE QUESTIONNER SUR L'AU-DELÀ -->
+        <a href="audela.html" class="category-card aud-theme">
+            <div class="card-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=600&q=80" alt="Espace et temps lointains">
             </div>
-            <div class="card-content">
-                <p class="question-text">Si je change de prénom, de vêtements et de coiffure, est-ce que je suis toujours exactement la même personne ?</p>
-                <p class="pense-bete">🕵️‍♂️ Qu'est-ce qui fait que "tu" es "toi" ?</p>
+            <div class="card-body">
+                <h2>Se questionner sur l'Au-delà 🌌</h2>
+                <p>Voyage aux limites de notre réalité : au-delà de la mort, du temps, de l'espace et de l'univers.</p>
             </div>
-        </div>
-
-        <!-- SUR LE MONDE -->
-        <div class="card" data-category="monde">
-            <div class="card-img-wrapper">
-                <span class="badge cat-monde">Sur le monde</span>
-                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=500&q=80" alt="Espace" class="card-img">
-            </div>
-            <div class="card-content">
-                <p class="question-text">Si un arbre tombe au milieu d'une forêt déserte et que personne ne l'entend, fait-il du bruit ?</p>
-                <p class="pense-bete">🌲 Le bruit existe-t-il sans oreilles pour l'écouter ?</p>
-            </div>
-        </div>
-
-        <div class="card" data-category="monde">
-            <div class="card-img-wrapper">
-                <span class="badge cat-monde">Sur le monde</span>
-                <img src="https://images.unsplash.com/photo-1518887570146-0612132dd618?auto=format&fit=crop&w=500&q=80" alt="Nature" class="card-img">
-            </div>
-            <div class="card-content">
-                <p class="question-text">Est-ce que la nature fait des erreurs, ou est-ce que tout est parfait à sa manière ?</p>
-                <p class="pense-bete">🍁 Regarde la forme d'une feuille...</p>
-            </div>
-        </div>
-
-        <!-- SUR L'AVENIR -->
-        <div class="card" data-category="avenir">
-            <div class="card-img-wrapper">
-                <span class="badge cat-avenir">Sur l'avenir</span>
-                <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=500&q=80" alt="Robot" class="card-img">
-            </div>
-            <div class="card-content">
-                <p class="question-text">Si un robot devient capable de pleurer et de rire, aura-t-il le droit d'avoir un cœur humain ?</p>
-                <p class="pense-bete">🤖 Suffit-il d'imiter les émotions pour les ressentir ?</p>
-            </div>
-        </div>
-
-        <!-- SUR L'AUTRE -->
-        <div class="card" data-category="autre">
-            <div class="card-img-wrapper">
-                <span class="badge cat-autre">Sur l'autre</span>
-                <img src="https://images.unsplash.com/photo-1516627145497-ae6968895b74?auto=format&fit=crop&w=500&q=80" alt="Enfants qui rient" class="card-img">
-            </div>
-            <div class="card-content">
-                <p class="question-text">Est-ce que le "rouge" que je vois dans mes yeux est exactement le même "rouge" que tu vois dans les tiens ?</p>
-                <p class="pense-bete">🎨 On partage les mêmes mots, mais partage-t-on les mêmes sensations ?</p>
-            </div>
-        </div>
-
-        <!-- SUR L'AU-DELÀ -->
-        <div class="card" data-category="audela">
-            <div class="card-img-wrapper">
-                <span class="badge cat-audela">Sur l'au-delà</span>
-                <img src="https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=500&q=80" alt="Étoiles" class="card-img">
-            </div>
-            <div class="card-content">
-                <p class="question-text">Où s'arrête l'Univers, et qu'y a-t-il juste après la fin de l'espace ?</p>
-                <p class="pense-bete">✨ Le vide peut-il durer toujours ?</p>
-            </div>
-        </div>
-
-        <div class="card" data-category="audela">
-            <div class="card-img-wrapper">
-                <span class="badge cat-audela">Sur l'au-delà</span>
-                <img src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&w=500&q=80" alt="Galaxie" class="card-img">
-            </div>
-            <div class="card-content">
-                <p class="question-text">D'où viennent les histoires qui n'ont pas encore été écrites ? Et où vont les souvenirs oubliés ?</p>
-                <p class="pense-bete">⏳ Une idée peut-elle disparaître à tout jamais ?</p>
-            </div>
-        </div>
+        </a>
 
     </main>
 
-    <!-- --- LOGIQUE DE FILTRAGE JAVASCRIPT --- -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const buttons = document.querySelectorAll('.filter-btn:not(#btn-invisible)');
-            const btnInvisible = document.getElementById('btn-invisible');
-            const cards = document.querySelectorAll('.card');
+    <footer>
+        <p>© 2026 Le Labo des Curieux — Développé sur la branche develop-v1.0</p>
+    </footer>
 
-            // Filtrage des catégories classiques
-            buttons.forEach(button => {
-                button.addEventListener('click', () => {
-                    buttons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-
-                    const categoryFilter = button.getAttribute('data-cat');
-
-                    cards.forEach(card => {
-                        const cardCategory = card.getAttribute('data-category');
-                        
-                        if (categoryFilter === 'all' || categoryFilter === cardCategory) {
-                            card.style.display = 'flex';
-                            card.style.animation = 'none';
-                            card.offsetHeight; // Déclenche un redraw
-                            card.style.animation = 'fadeIn 0.5s ease forwards';
-                        } else {
-                            card.style.display = 'none';
-                        }
-                    });
-                });
-            });
-
-            // Redirection pour la catégorie Invisible
-            if (btnInvisible) {
-                btnInvisible.addEventListener('click', () => {
-                    window.location.href = 'invisible.html';
-                });
-            }
-        });
-    </script>
 </body>
 </html>
