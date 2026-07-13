@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se questionner sur l'autre - Le Labo des Curieux</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
+
+        :root {
+            --bg-autre: #4c0519; /* Fond bordeaux / rose très profond */
+            --text-light: #f1f5f9;
+            --accent-pink: #f43f5e;
+            --drawer-bg: #881337;
+            --card-hover-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-autre);
+            color: var(--text-light);
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: var(--accent-pink);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-pink);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid var(--accent-pink);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-pink);
+            color: var(--bg-autre);
+        }
+
+        .grid-autre {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-aut {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .card-aut:hover {
+            transform: translateY(-5px);
+            background: var(--card-hover-bg);
+        }
+
+        .card-aut img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: brightness(80%);
+            transition: 0.5s;
+        }
+
+        .card-aut:hover img {
+            filter: brightness(100%) scale(1.03);
+        }
+
+        .card-aut-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-aut-content h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card-aut-content p {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* --- PANNEAU COULISSANT (DRAWER) --- */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100vh;
+            background-color: var(--drawer-bg);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-pink);
+            color: var(--bg-autre);
+            border-color: var(--accent-pink);
+        }
+
+        .drawer-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-pink);
+            margin: 20px 0 30px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .questions-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .question-item {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideInQuestion 0.4s ease forwards;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        @keyframes slideInQuestion {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+            z-index: 999;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
+
+    <header>
+        <h1>Se questionner sur l'autre 👥</h1>
+        <p>Qui sont les personnes qui t'entourent ? Découvre les mystères de l'empathie, du lien social et du partage.</p>
+    </header>
+
+    <main class="grid-autre">
+        
+        <div class="card-aut" data-topic="identite-autre">
+            <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=600&q=80" alt="Regards ou expressions">
+            <div class="card-aut-content">
+                <h2>L'identité de l'autre</h2>
+                <p>Peut-on réellement savoir ce qui se passe dans la tête d'une autre personne ?</p>
+            </div>
+        </div>
+
+        <div class="card-aut" data-topic="altruisme">
+            <img src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?auto=format&fit=crop&w=600&q=80" alt="Mains tendues ou entraide">
+            <div class="card-aut-content">
+                <h2>L'altruisme</h2>
+                <p>Existe-t-il des gestes de pure gentillesse qui n'attendent absolument rien en retour ?</p>
+            </div>
+        </div>
+
+        <div class="card-aut" data-topic="vivre-ensemble">
+            <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80" alt="Groupe d'amis rigolant ensemble">
+            <div class="card-aut-content">
+                <h2>Le vivre-ensemble</h2>
+                <p>Comment des milliards d'individus différents peuvent-ils réussir à s'entendre sans chaos ?</p>
+            </div>
+        </div>
+
+        <div class="card-aut" data-topic="famille">
+            <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80" alt="Silhouettes de famille au coucher du soleil">
+            <div class="card-aut-content">
+                <h2>La famille</h2>
+                <p>Qu'est-ce qui nous lie le plus : le sang qui coule dans nos veines ou les souvenirs partagés ?</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- --- LE PANNEAU LATÉRAL --- -->
+    <div class="drawer" id="drawer">
+        <button class="close-btn" id="close-btn">Fermer ✖</button>
+        <h2 class="drawer-title" id="drawer-title">Thème de l'autre</h2>
+        <ul class="questions-list" id="questions-list">
+            <!-- Les questions s'insèrent ici dynamiquement -->
+        </ul>
+    </div>
+
+    <!-- --- LOGIQUE JAVASCRIPT --- -->
+    <script>
+        const questionsData = {
+            'identite-autre': {
+                title: "L'identité de l'autre 🎭",
+                questions: [
+                    "👀 Si tu ne peux pas voir à travers ses yeux, comment es-tu sûr que l'autre ressent les mêmes émotions que toi ?",
+                    "💭 Est-ce que les autres pensent à toi de la même façon que tu penses à eux ?",
+                    "🦊 Pourquoi porte-t-on parfois un masque différent selon la personne avec qui on discute ?",
+                    "🗣️ Peut-on vraiment comprendre quelqu'un qui parle une autre langue et a une autre culture ?",
+                    "👤 Si quelqu'un refuse de parler, son silence nous dit-il quand même quelque chose sur lui ?",
+                    "🧠 Les autres voient-ils tes défauts de la même manière que tu les vois toi-même ?",
+                    "🎭 Est-ce qu'on invente une version imaginaire des gens avant de réellement les connaître ?",
+                    "🌟 Qu'est-ce qui nous fascine le plus chez l'autre : ses ressemblances avec nous ou ses différences ?",
+                    "🐈 Les animaux nous considèrent-ils comme des 'autres' bizarres ou comme des membres de leur famille ?",
+                    "🚪 Est-ce qu'une partie du mystère de l'autre restera pour toujours fermée à clé ?"
+                ]
+            },
+            altruisme: {
+                title: "L'altruisme ❤️",
+                questions: [
+                    "🎁 Quand on donne un jouet pour faire plaisir, le fait de se sentir joyeux annule-t-il la gratuité du geste ?",
+                    "🕊️ Peut-on donner sa vie pour un parfait inconnu sans hésiter une seule seconde ?",
+                    "🤝 La gentillesse est-elle une force magique ou une règle de survie inventée par la société ?",
+                    "🌱 Pourquoi notre poitrine se serre-t-elle quand on voit quelqu'un d'autre pleurer ou souffrir ?",
+                    "💎 Faut-il être totalement heureux soi-même pour pouvoir commencer à aider les autres ?",
+                    "🔄 Si tu aides quelqu'un en secret sans que personne ne le sache, le geste a-t-il plus de valeur ?",
+                    "🌳 Est-ce que la nature fait preuve d'altruisme, comme les arbres qui partagent leur sève ?",
+                    "🍿 Partager son dernier morceau de gâteau est-il un acte héroïque ou simplement normal ?",
+                    "🤖 Un robot programmé pour être super gentil peut-il être qualifié d'altruiste ?",
+                    "☀️ Est-ce qu'un seul petit sourire offert dans la rue peut changer toute la journée d'un passant ?"
+                ]
+            },
+            'vivre-ensemble': {
+                title: "Le vivre-ensemble 🏙️",
+                questions: [
+                    "🛑 Pourquoi avons-nous besoin de lois écrites pour réussir à ne pas nous disputer ?",
+                    "🗣️ Si tout le monde avait exactement les mêmes opinions, le monde serait-il parfait ou ennuyeux ?",
+                    "⚖️ Où s'arrête ta liberté personnelle quand elle commence à croiser celle de ton voisin ?",
+                    "🐜 Que pouvons-nous apprendre des fourmis qui construisent des cités géantes sans aucun chef ?",
+                    "🌍 Peut-on être ami avec la Terre entière, ou notre cerveau est-il limité à un petit groupe ?",
+                    "🕊️ Pourquoi est-il si facile de se fâcher et parfois si difficile de demander pardon ?",
+                    "🎵 Une société ressemble-t-elle à un orchestre où chaque instrument doit jouer sa propre note ?",
+                    "🤝 Est-ce que respecter l'autre veut dire être d'accord avec tout ce qu'il fait ?",
+                    "🧱 Comment construire un pont de communication avec quelqu'un qui refuse de nous écouter ?",
+                    "🔮 À quoi ressemblera le vivre-ensemble quand les humains habiteront dans des stations spatiales ?"
+                ]
+            },
+            famille: {
+                title: "La famille 🏡",
+                questions: [
+                    "🧬 Si on ne choisit pas sa famille de naissance, peut-on s'en choisir une de cœur plus tard ?",
+                    "🕰️ Pourquoi aimons-nous tant que nos parents nous racontent des histoires sur notre enfance ?",
+                    "❤️ Est-ce que l'amour familial est automatique ou se construit-il jour après jour ?",
+                    "🌳 Les branches de ton arbre généalogique définissent-elles qui tu vas devenir demain ?",
+                    "🤫 Pourquoi les disputes de famille font-elles souvent plus de peine que les disputes avec des copains ?",
+                    "🐈 Un animal de compagnie peut-il devenir un membre de la famille à part entière ?",
+                    "🗝️ Quels secrets se transmettent de génération en génération sans jamais être prononcés ?",
+                    "🏡 Est-ce que la maison est un lieu physique ou juste l'endroit où se trouvent ceux qu'on aime ?",
+                    "🛡️ Pourquoi se sent-on parfois obligé de défendre ses frères et sœurs même s'ils ont tort ?",
+                    "🌌 Si nous venons tous des mêmes étoiles, l'humanité entière ne forme-t-elle pas une seule et unique famille ?"
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-aut');
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('close-btn');
+            const drawerTitle = document.getElementById('drawer-title');
+            const questionsList = document.getElementById('questions-list');
+
+            function openDrawer(topicKey) {
+                const data = questionsData[topicKey];
+                if (!data) return;
+
+                drawerTitle.textContent = data.title;
+                questionsList.innerHTML = '';
+
+                data.questions.forEach((q, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'question-item';
+                    li.textContent = q;
+                    li.style.animationDelay = `${index * 0.05}s`;
+                    questionsList.appendChild(li);
+                });
+
+                drawer.classList.add('open');
+                overlay.classList.add('visible');
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const topic = card.getAttribute('data-topic');
+                    openDrawer(topic);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeDrawer);
+            overlay.addEventListener('click', closeDrawer);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDrawer();
+            });
+        });
+    </script>
+</body>
+</html>
