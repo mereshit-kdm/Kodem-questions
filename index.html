@@ -18,6 +18,7 @@
             --accent-avenir: #00cec9;
             --accent-autre: #ffb142;
             --accent-audela: #a29bfe;
+            --accent-invisible: #8e44ad;
         }
 
         * {
@@ -91,6 +92,8 @@
         .filter-btn[data-cat="avenir"].active, .filter-btn[data-cat="avenir"]:hover { background-color: var(--accent-avenir); color: white; }
         .filter-btn[data-cat="autre"].active, .filter-btn[data-cat="autre"]:hover { background-color: var(--accent-autre); color: white; }
         .filter-btn[data-cat="audela"].active, .filter-btn[data-cat="audela"]:hover { background-color: var(--accent-audela); color: white; }
+        .filter-btn#btn-invisible { border: 2px dashed var(--accent-invisible); color: var(--accent-invisible); }
+        .filter-btn#btn-invisible:hover { background-color: var(--accent-invisible); color: white; border-style: solid; }
 
         /* --- GRILLE DE CARTES --- */
         .questions-grid {
@@ -203,6 +206,7 @@
         <button class="filter-btn" data-cat="avenir">Se questionner sur l'avenir 🤖</button>
         <button class="filter-btn" data-cat="autre">Se questionner sur l'autre 🤝</button>
         <button class="filter-btn" data-cat="audela">Se questionner sur l'au-delà 🌌</button>
+        <button class="filter-btn" id="btn-invisible">Se questionner sur l'invisible 👻</button>
     </div>
 
     <!-- Grille des Questions -->
@@ -306,14 +310,14 @@
     <!-- --- LOGIQUE DE FILTRAGE JAVASCRIPT --- -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const buttons = document.querySelectorAll('.filter-btn');
+            const buttons = document.querySelectorAll('.filter-btn:not(#btn-invisible)');
+            const btnInvisible = document.getElementById('btn-invisible');
             const cards = document.querySelectorAll('.card');
 
+            // Filtrage des catégories classiques
             buttons.forEach(button => {
                 button.addEventListener('click', () => {
-                    // Retirer la classe active de tous les boutons
                     buttons.forEach(btn => btn.classList.remove('active'));
-                    // Ajouter la classe au bouton cliqué
                     button.classList.add('active');
 
                     const categoryFilter = button.getAttribute('data-cat');
@@ -323,7 +327,6 @@
                         
                         if (categoryFilter === 'all' || categoryFilter === cardCategory) {
                             card.style.display = 'flex';
-                            // Petite animation de reset
                             card.style.animation = 'none';
                             card.offsetHeight; // Déclenche un redraw
                             card.style.animation = 'fadeIn 0.5s ease forwards';
@@ -333,6 +336,13 @@
                     });
                 });
             });
+
+            // Redirection pour la catégorie Invisible
+            if (btnInvisible) {
+                btnInvisible.addEventListener('click', () => {
+                    window.location.href = 'invisible.html';
+                });
+            }
         });
     </script>
 </body>
