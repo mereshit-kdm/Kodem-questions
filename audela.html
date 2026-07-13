@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Au-delà - Le Labo des Curieux</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
+
+        :root {
+            --bg-audela: #1a0f2e; /* Fond violet/cosmique profond pour l'au-delà */
+            --text-light: #f1f5f9;
+            --accent-purple: #b39ddb;
+            --drawer-bg: #2d1b4e;
+            --card-hover-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-audela);
+            color: var(--text-light);
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: var(--accent-purple);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid var(--accent-purple);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-purple);
+            color: #1a0f2e;
+        }
+
+        .grid-audela {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-aud {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .card-aud:hover {
+            transform: translateY(-5px);
+            background: var(--card-hover-bg);
+        }
+
+        .card-aud img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: brightness(80%);
+            transition: 0.5s;
+        }
+
+        .card-aud:hover img {
+            filter: brightness(100%) scale(1.03);
+        }
+
+        .card-aud-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-aud-content h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card-aud-content p {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* --- PANNEAU COULISSANT (DRAWER) --- */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100vh;
+            background-color: var(--drawer-bg);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-purple);
+            color: #1a0f2e;
+            border-color: var(--accent-purple);
+        }
+
+        .drawer-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-purple);
+            margin: 20px 0 30px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .questions-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .question-item {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideInQuestion 0.4s ease forwards;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        @keyframes slideInQuestion {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+            z-index: 999;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
+
+    <header>
+        <h1>L'Au-delà 🌌</h1>
+        <p>Voyage au-delà des frontières de notre réalité quotidienne. Clique sur un thème pour explorer l'invisible lointain.</p>
+    </header>
+
+    <main class="grid-audela">
+        
+        <div class="card-aud" data-topic="mort">
+            <img src="https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=600&q=80" alt="Lumière mystérieuse">
+            <div class="card-aud-content">
+                <h2>Au-delà de la mort</h2>
+                <p>Où s'en va la vie quand elle s'éteint ? Explore les questions sur le souvenir et le grand voyage.</p>
+            </div>
+        </div>
+
+        <div class="card-aud" data-topic="temps">
+            <img src="https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=600&q=80" alt="Horloge cosmique">
+            <div class="card-aud-content">
+                <h2>Au-delà du temps</h2>
+                <p>Le temps a-t-il un début et une fin ? Découvre les mystères de l'éternité et du présent.</p>
+            </div>
+        </div>
+
+        <div class="card-aud" data-topic="espace">
+            <img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&w=600&q=80" alt="Ciel étoilé profond">
+            <div class="card-aud-content">
+                <h2>Au-delà de l'espace</h2>
+                <p>Si on voyageait sans s'arrêter, sur quoi tomberait-on ? Questionne les limites des lieux.</p>
+            </div>
+        </div>
+
+        <div class="card-aud" data-topic="univers">
+            <img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=600&q=80" alt="Multivers et dimensions">
+            <div class="card-aud-content">
+                <h2>Au-delà de l'univers</h2>
+                <p>Y a-t-il d'autres réalités cachées ? Plonge dans l'hypothèse des multivers et des dimensions secrètes.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- --- LE PANNEAU LATÉRAL --- -->
+    <div class="drawer" id="drawer">
+        <button class="close-btn" id="close-btn">Fermer ✖</button>
+        <h2 class="drawer-title" id="drawer-title">Thème de l'au-delà</h2>
+        <ul class="questions-list" id="questions-list">
+            <!-- Les questions s'insèrent ici dynamiquement -->
+        </ul>
+    </div>
+
+    <!-- --- LOGIQUE JAVASCRIPT --- -->
+    <script>
+        const questionsData = {
+            mort: {
+                title: "Au-delà de la mort 🕯️",
+                questions: [
+                    "🦋 Où va l'énergie de notre corps et de nos pensées quand on meurt ?",
+                    "💭 Est-ce que mourir, c'est comme s'endormir pour toujours sans jamais faire de cauchemars ?",
+                    "🌱 Si rien ne se perd dans la nature, sous quelle forme peut-on renaître ?",
+                    "📖 Est-ce que le souvenir des gens qu'on aime les maintient vivants dans un autre monde ?",
+                    "⏳ Si on vivait pour toujours, apprécierait-on autant les petits bonheurs de la journée ?",
+                    "🕊️ Pourquoi la mort fait-elle si peur alors que personne ne sait ce qui s'y passe ?",
+                    "✨ Est-ce que notre conscience existait déjà quelque part avant notre naissance ?",
+                    "👣 Laisse-t-on une trace invisible dans l'histoire du monde après notre départ ?",
+                    "🌌 Les fantômes sont-ils de vrais mystères ou juste des histoires créées par notre imagination ?",
+                    "🎭 Est-ce que la vie a plus de valeur parce qu'elle a une fin ?"
+                ]
+            },
+            temps: {
+                title: "Au-delà du temps ⏳",
+                questions: [
+                    "🕰️ Si le temps ne s'arrête jamais, a-t-il commencé un jour précis ?",
+                    "🪐 Est-ce que l'éternité est un temps très long, ou un endroit où le temps n'existe pas ?",
+                    "🔄 Si on pouvait voyager dans le passé, changerait-on qui on est aujourd'hui ?",
+                    "📱 Est-ce que le futur existe déjà quelque part, attendant qu'on y arrive ?",
+                    "💭 Pourquoi une minute d'ennui semble plus longue qu'une heure de jeu ?",
+                    "☀️ Si le Soleil s'éteignait, est-ce que les jours continueraient à compter ?",
+                    "🕯️ Peut-on piéger le moment présent ou est-il déjà fini dès qu'on y pense ?",
+                    "🦖 Les dinosaures et nous, partageons-nous la même horloge universelle ?",
+                    "🍂 Est-ce que le temps guérit vraiment tous les chagrins ou fait-il juste oublier ?",
+                    "🌌 Si l'Univers s'arrêtait de bouger, est-ce que le temps s'arrêterait aussi ?"
+                ]
+            },
+            espace: {
+                title: "Au-delà de l'espace 🗺️",
+                questions: [
+                    "🧱 S'il y a un mur tout au bout de l'espace, qu'est-ce qu'il y a derrière ce mur ?",
+                    "🕳️ Si l'espace est vide, comment peut-il se plier ou s'agrandir ?",
+                    "🌌 Peut-on imaginer un endroit qui ne se trouve nulle part sur aucune carte ?",
+                    "🛸 Si on s'éloigne infiniment de la Terre, finit-on par revenir à notre point de départ ?",
+                    "🚪 Y a-t-il des passages secrets dans l'univers pour aller d'un bout à l'autre en un éclair ?",
+                    "🌍 Comment l'espace fait-il pour ne pas tomber sur lui-même ?",
+                    "🧲 Si la gravité s'arrêtait, où irait tout ce qui n'est pas attaché ?",
+                    "🔭 Est-ce que le vide est vraiment vide, ou contient-il une matière cachée ?",
+                    "💭 Est-ce que notre esprit peut voyager dans des endroits où notre corps ne pourra jamais aller ?",
+                    "📦 Peut-on concevoir un espace sans aucun objet à l'intérieur ?"
+                ]
+            },
+            univers: {
+                title: "Au-delà de l'univers 🌀",
+                questions: [
+                    "🧼 Notre univers est-il une simple bulle au milieu de milliards d'autres bulles ?",
+                    "🎭 S'il existe des univers parallèles, y a-t-il un autre 'toi' qui fait d'autres choix ?",
+                    "🌌 Qu'est-ce qui entoure notre univers ? Un néant total ou une autre réalité ?",
+                    "🎨 Est-ce que les lois de la physique (comme la gravité) sont différentes ailleurs ?",
+                    "🧩 Si notre univers a une fin, fait-il partie d'un casse-tête beaucoup plus grand ?",
+                    "👽 Les extraterrestres imaginés habitent-ils notre ciel ou un au-delà inaccessible ?",
+                    "💻 Notre monde pourrait-il être une illusion ou une simulation géante ?",
+                    "✨ Comment une explosion (le Big Bang) a-t-elle pu créer de l'ordre et de la vie ?",
+                    "🧠 L'univers est-il capable de penser, et sommes-nous ses propres neurones ?",
+                    "🌈 Y a-t-il des dimensions au-delà des 3 dimensions que nous pouvons voir et toucher ?"
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-aud');
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('close-btn');
+            const drawerTitle = document.getElementById('drawer-title');
+            const questionsList = document.getElementById('questions-list');
+
+            function openDrawer(topicKey) {
+                const data = questionsData[topicKey];
+                if (!data) return;
+
+                drawerTitle.textContent = data.title;
+                questionsList.innerHTML = '';
+
+                data.questions.forEach((q, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'question-item';
+                    li.textContent = q;
+                    li.style.animationDelay = `${index * 0.05}s`;
+                    questionsList.appendChild(li);
+                });
+
+                drawer.classList.add('open');
+                overlay.classList.add('visible');
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const topic = card.getAttribute('data-topic');
+                    openDrawer(topic);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeDrawer);
+            overlay.addEventListener('click', closeDrawer);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDrawer();
+            });
+        });
+    </script>
+</body>
+</html>
