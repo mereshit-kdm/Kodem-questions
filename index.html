@@ -12,6 +12,7 @@
             --text-light: #f1f5f9;
             --accent-purple: #a29bfe;
             --accent-cosmic: #b39ddb;
+            --accent-green: #6ee7b7;
             --card-bg: rgba(255, 255, 255, 0.05);
             --card-hover-bg: rgba(255, 255, 255, 0.08);
         }
@@ -59,9 +60,9 @@
 
         .grid-categories {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 40px;
-            max-width: 900px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
             width: 100%;
             margin: 20px auto;
             padding: 20px;
@@ -74,7 +75,7 @@
             overflow: hidden;
             text-decoration: none;
             color: inherit;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s, background-color 0.3s;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s, border-color 0.3s, background-color 0.3s;
             display: flex;
             flex-direction: column;
             cursor: pointer;
@@ -87,20 +88,26 @@
 
         /* Styles spécifiques pour la carte Invisible */
         .category-card.inv-theme:hover {
-            box-shadow: 0 15px 30px rgba(162, 155, 254, 0.2);
+            box-shadow: 0 15px 30px rgba(162, 155, 254, 0.15);
             border-color: var(--accent-purple);
         }
 
         /* Styles spécifiques pour la carte Au-delà */
         .category-card.aud-theme:hover {
-            box-shadow: 0 15px 30px rgba(179, 157, 219, 0.2);
+            box-shadow: 0 15px 30px rgba(179, 157, 219, 0.15);
             border-color: var(--accent-cosmic);
+        }
+
+        /* Styles spécifiques pour la carte Se questionner sur moi-même */
+        .category-card.soi-theme:hover {
+            box-shadow: 0 15px 30px rgba(110, 231, 183, 0.15);
+            border-color: var(--accent-green);
         }
 
         .card-image-wrapper {
             position: relative;
             width: 100%;
-            height: 240px;
+            height: 220px;
             overflow: hidden;
         }
 
@@ -116,7 +123,7 @@
         }
 
         .card-body {
-            padding: 30px;
+            padding: 25px;
             text-align: center;
             flex-grow: 1;
             display: flex;
@@ -126,13 +133,14 @@
 
         .card-body h2 {
             font-family: 'Fredoka', sans-serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 12px;
             transition: color 0.3s;
         }
 
         .inv-theme .card-body h2 { color: var(--accent-purple); }
         .aud-theme .card-body h2 { color: var(--accent-cosmic); }
+        .soi-theme .card-body h2 { color: var(--accent-green); }
 
         .card-body p {
             font-size: 1.05rem;
@@ -153,7 +161,7 @@
 
     <header>
         <h1>Le Labo des <span>Curieux</span> 🧪</h1>
-        <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers et de l'esprit.</p>
+        <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers, de l'invisible et de ton propre esprit.</p>
     </header>
 
     <main class="grid-categories">
@@ -177,6 +185,17 @@
             <div class="card-body">
                 <h2>Se questionner sur l'Au-delà 🌌</h2>
                 <p>Voyage aux limites de notre réalité : au-delà de la mort, du temps, de l'espace et de l'univers.</p>
+            </div>
+        </a>
+
+        <!-- CARTE : SE QUESTIONNER SUR MOI-MÊME -->
+        <a href="moimeme.html" class="category-card soi-theme">
+            <div class="card-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" alt="Méditation et introspection">
+            </div>
+            <div class="card-body">
+                <h2>Se questionner sur moi-même 🧘‍♂️</h2>
+                <p>Plonge à l'intérieur de ton être : l'identité, les mystères de ta conscience et le secret de ton âme.</p>
             </div>
         </a>
 
