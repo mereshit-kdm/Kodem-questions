@@ -13,6 +13,7 @@
             --accent-purple: #a29bfe;
             --accent-cosmic: #b39ddb;
             --accent-green: #6ee7b7;
+            --accent-world: #ff9f43;
             --card-bg: rgba(255, 255, 255, 0.05);
             --card-hover-bg: rgba(255, 255, 255, 0.08);
         }
@@ -60,8 +61,8 @@
 
         .grid-categories {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
             max-width: 1200px;
             width: 100%;
             margin: 20px auto;
@@ -86,28 +87,31 @@
             background: var(--card-hover-bg);
         }
 
-        /* Styles spécifiques pour la carte Invisible */
+        /* Styles spécifiques pour chaque carte (Ombrages et Bordures) */
         .category-card.inv-theme:hover {
             box-shadow: 0 15px 30px rgba(162, 155, 254, 0.15);
             border-color: var(--accent-purple);
         }
 
-        /* Styles spécifiques pour la carte Au-delà */
         .category-card.aud-theme:hover {
             box-shadow: 0 15px 30px rgba(179, 157, 219, 0.15);
             border-color: var(--accent-cosmic);
         }
 
-        /* Styles spécifiques pour la carte Se questionner sur moi-même */
         .category-card.soi-theme:hover {
             box-shadow: 0 15px 30px rgba(110, 231, 183, 0.15);
             border-color: var(--accent-green);
         }
 
+        .category-card.world-theme:hover {
+            box-shadow: 0 15px 30px rgba(255, 159, 67, 0.15);
+            border-color: var(--accent-world);
+        }
+
         .card-image-wrapper {
             position: relative;
             width: 100%;
-            height: 220px;
+            height: 200px;
             overflow: hidden;
         }
 
@@ -133,7 +137,7 @@
 
         .card-body h2 {
             font-family: 'Fredoka', sans-serif;
-            font-size: 1.8rem;
+            font-size: 1.7rem;
             margin-bottom: 12px;
             transition: color 0.3s;
         }
@@ -141,9 +145,10 @@
         .inv-theme .card-body h2 { color: var(--accent-purple); }
         .aud-theme .card-body h2 { color: var(--accent-cosmic); }
         .soi-theme .card-body h2 { color: var(--accent-green); }
+        .world-theme .card-body h2 { color: var(--accent-world); }
 
         .card-body p {
-            font-size: 1.05rem;
+            font-size: 1rem;
             color: #94a3b8;
             line-height: 1.5;
         }
@@ -161,18 +166,18 @@
 
     <header>
         <h1>Le Labo des <span>Curieux</span> 🧪</h1>
-        <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers, de l'invisible et de ton propre esprit.</p>
+        <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères du monde, de l'univers et de ton esprit.</p>
     </header>
 
     <main class="grid-categories">
 
-        <!-- CARTE : L'INVISIBLE -->
+        <!-- CARTE : SE QUESTIONNER SUR L'INVISIBLE -->
         <a href="invisible.html" class="category-card inv-theme">
             <div class="card-image-wrapper">
                 <img src="https://images.unsplash.com/photo-1516331138075-f3ad16d69762?auto=format&fit=crop&w=600&q=80" alt="Mystère de l'invisible">
             </div>
             <div class="card-body">
-                <h2>L'Invisible ✨</h2>
+                <h2>Se Questionner sur l'Invisible ✨</h2>
                 <p>Explore ce que nos yeux ne perçoivent pas : de l'infiniment petit aux forces sacrées ou secrètes.</p>
             </div>
         </a>
@@ -196,6 +201,17 @@
             <div class="card-body">
                 <h2>Se questionner sur moi-même 🧘‍♂️</h2>
                 <p>Plonge à l'intérieur de ton être : l'identité, les mystères de ta conscience et le secret de ton âme.</p>
+            </div>
+        </a>
+
+        <!-- CARTE : SE QUESTIONNER SUR LE MONDE -->
+        <a href="monde.html" class="category-card world-theme">
+            <div class="card-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80" alt="Exploration et mystères du monde">
+            </div>
+            <div class="card-body">
+                <h2>Se questionner sur le monde 🌍</h2>
+                <p>Explore l'histoire terrestre : les révolutions majeures, les secrets des civilisations et les énigmes géographiques.</p>
             </div>
         </a>
 
