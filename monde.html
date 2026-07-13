@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Se questionner sur le monde - Le Labo des Curieux</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
+
+        :root {
+            --bg-monde: #2d0f02; /* Fond terre cuite / marron très profond */
+            --text-light: #f1f5f9;
+            --accent-orange: #ff9f43;
+            --drawer-bg: #4a1c09;
+            --card-hover-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-monde);
+            color: var(--text-light);
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: var(--accent-orange);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-orange);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid var(--accent-orange);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-orange);
+            color: var(--bg-monde);
+        }
+
+        .grid-monde {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-monde {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .card-monde:hover {
+            transform: translateY(-5px);
+            background: var(--card-hover-bg);
+        }
+
+        .card-monde img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            filter: brightness(80%);
+            transition: 0.5s;
+        }
+
+        .card-monde:hover img {
+            filter: brightness(100%) scale(1.03);
+        }
+
+        .card-monde-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card-monde-content h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .card-monde-content p {
+            font-size: 0.95rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* --- PANNEAU COULISSANT (DRAWER) --- */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100vh;
+            background-color: var(--drawer-bg);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-orange);
+            color: var(--bg-monde);
+            border-color: var(--accent-orange);
+        }
+
+        .drawer-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-orange);
+            margin: 20px 0 30px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .questions-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .question-item {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideInQuestion 0.4s ease forwards;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        @keyframes slideInQuestion {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+            z-index: 999;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
+
+    <header>
+        <h1>Se questionner sur le monde 🌍</h1>
+        <p>Notre planète regorge d'histoires fascinantes, de mystères inexpliqués et de bouleversements. Clique sur un thème pour l'explorer.</p>
+    </header>
+
+    <main class="grid-monde">
+        
+        <div class="card-monde" data-topic="vainqueurs">
+            <img src="https://images.unsplash.com/photo-1599733589046-10c005739ef9?auto=format&fit=crop&w=600&q=80" alt="Statue historique antique">
+            <div class="card-monde-content">
+                <h2>Les vainqueurs qui ont fait l’histoire</h2>
+                <p>Est-ce que l'histoire est toujours écrite par ceux qui gagnent les batailles ?</p>
+            </div>
+        </div>
+
+        <div class="card-monde" data-topic="bermude">
+            <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=600&q=80" alt="Océan mystérieux">
+            <div class="card-monde-content">
+                <h2>Le triangle de Bermude</h2>
+                <p>Secrets de l'océan, boussoles affolées et disparitions mystérieuses en haute mer.</p>
+            </div>
+        </div>
+
+        <div class="card-monde" data-topic="merveilles">
+            <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80" alt="Pyramides d'Egypte">
+            <div class="card-monde-content">
+                <h2>Les sept merveilles du monde</h2>
+                <p>Comment les humains de l'Antiquité ont-ils pu bâtir des monuments aussi gigantesques ?</p>
+            </div>
+        </div>
+
+        <div class="card-monde" data-topic="revolutions">
+            <img src="https://images.unsplash.com/photo-1569930784237-ea65a2f48a63?auto=format&fit=crop&w=600&q=80" alt="Foule en mouvement ou révolte historique">
+            <div class="card-monde-content">
+                <h2>Les plus grandes révolutions</h2>
+                <p>Quand le peuple décide de tout changer, comment le monde bascule-t-il ?</p>
+            </div>
+        </div>
+
+        <div class="card-monde" data-topic="israel">
+            <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=600&q=80" alt="Jérusalem pierres anciennes">
+            <div class="card-monde-content">
+                <h2>La terre d’Israël</h2>
+                <p>Pourquoi ce petit morceau de terre est-il au carrefour de tant de cultures et d'histoires ?</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- --- LE PANNEAU LATÉRAL --- -->
+    <div class="drawer" id="drawer">
+        <button class="close-btn" id="close-btn">Fermer ✖</button>
+        <h2 class="drawer-title" id="drawer-title">Thème du monde</h2>
+        <ul class="questions-list" id="questions-list">
+            <!-- Les questions s'insèrent ici dynamiquement -->
+        </ul>
+    </div>
+
+    <!-- --- LOGIQUE JAVASCRIPT --- -->
+    <script>
+        const questionsData = {
+            vainqueurs: {
+                title: "Les vainqueurs qui ont fait l’histoire 👑",
+                questions: [
+                    "📜 Si les perdants des guerres avaient écrit les livres d'histoire, que lirions-nous aujourd'hui ?",
+                    "⚔️ Peut-on devenir un grand personnage historique sans jamais avoir fait de conquêtes ?",
+                    "🗣️ Pourquoi oublie-t-on souvent le nom des milliers de personnes qui ont aidé les chefs à gagner ?",
+                    "🎭 Un héros pour un pays peut-il être considéré comme un méchant pour un autre pays ?",
+                    "🏛️ Est-ce que la force militaire est le seul moyen de laisser une trace durable dans le temps ?",
+                    "📖 Comment faire la différence entre une légende inventée et la vérité sur un roi antique ?",
+                    "🗺️ Les frontières de nos pays actuels ne sont-elles que le résultat de victoires passées ?",
+                    "⏳ Est-ce que le temps finit toujours par rendre justice à ceux qui ont été oubliés ?",
+                    "🎨 Pourquoi les statues historiques représentent-elles toujours les chefs de manière parfaite ?",
+                    "💭 Changer le passé en pensée modifierait-il notre façon de vivre aujourd'hui ?"
+                ]
+            },
+            bermude: {
+                title: "Le triangle de Bermude 🧭",
+                questions: [
+                    "🌊 Pourquoi les boussoles et les instruments électroniques s'affolent-ils dans cette zone ?",
+                    "🛸 Les disparitions de bateaux cacheraient-elles des secrets sous-marins ou extraterrestres ?",
+                    "⛈️ Les tempêtes et les vagues géantes suffisent-elles à expliquer tous les mystères ?",
+                    "🧲 Existe-t-il des anomalies magnétiques naturelles créées par le cœur de la Terre ?",
+                    "🗺️ Pourquoi cette zone précise fait-elle plus peur que d'autres endroits profonds de l'océan ?",
+                    "🫧 Est-ce que des bulles de gaz géantes remontant du fond de l'eau pourraient faire couler des navires ?",
+                    "🦈 Si on fouillait tout le fond du triangle, que trouverait-on d'inattendu ?",
+                    "🏴‍☠️ Les vieilles légendes de marins ont-elles amplifié la réalité de cet endroit ?",
+                    "✈️ Comment un avion peut-il s'évanouir des radars sans laisser la moindre trace ?",
+                    "🌀 L'océan garde-t-il des secrets que la science moderne n'est pas encore prête à comprendre ?"
+                ]
+            },
+            merveilles: {
+                title: "Les sept merveilles du monde 🏛️",
+                questions: [
+                    "📐 Sans grues ni ordinateurs, comment les anciens ont-ils atteint une telle précision mathématique ?",
+                    "🏜️ Pourquoi la Pyramide de Khéops est-elle la seule merveille antique encore debout aujourd'hui ?",
+                    "🌿 Les Jardins suspendus de Babylone ont-ils vraiment existé ou étaient-ils un rêve de poète ?",
+                    "🗿 Pourquoi les humains ressentent-ils le besoin de construire des monuments disproportionnés ?",
+                    "🌊 Quel message le Phare d'Alexandrie voulait-il envoyer aux voyageurs de la Méditerranée ?",
+                    "🔨 Combien d'années de travail et d'artisans oubliés a-t-il fallu pour sculpter ces chefs-d'œuvre ?",
+                    "🔥 Si une œuvre d'art géante est détruite par un séisme ou un incendie, disparaît-elle vraiment ?",
+                    "🗳️ Qui a décidé un jour qu'il y avait exactement 'sept' merveilles et pas plus ?",
+                    "✨ Qu'est-ce qui rend un monument 'merveilleux' : sa taille, sa beauté ou son histoire ?",
+                    "🚀 Quelles constructions de notre époque mériteraient de devenir les merveilles du futur ?"
+                ]
+            },
+            revolutions: {
+                title: "Les plus grandes révolutions 📢",
+                questions: [
+                    "🔥 Pourquoi les humains acceptent-ils des règles pendant des siècles avant de soudainement se révolter ?",
+                    "🚜 La plus grande révolution était-elle politique, ou était-ce l'invention de l'agriculture ?",
+                    "💡 Une idée écrite dans un livre peut-elle être plus puissante que les armes d'une armée ?",
+                    "🔄 Est-ce qu'une révolution remplace toujours un pouvoir par un autre pouvoir identique ?",
+                    "⚙️ Comment la machine à vapeur et l'industrie ont-elles changé notre rapport au temps ?",
+                    "📱 Internet et les smartphones constituent-ils la révolution la plus rapide de l'histoire ?",
+                    "🕊️ Peut-on faire basculer le monde et faire une révolution sans utiliser la violence ?",
+                    "🥖 Si le peuple n'avait pas manqué de pain en 1789, la France serait-elle toujours une monarchie ?",
+                    "⏳ Faut-il du temps pour savoir si une révolution a été bonne ou mauvaise pour la société ?",
+                    "🚀 Quelle sera la prochaine grande révolution qui changera nos vies de fond en comble ?"
+                ]
+            },
+            israel: {
+                title: "La terre d’Israël ⛰️",
+                questions: [
+                    "🌍 Comment un si petit territoire géographique peut-il concentrer autant d'histoire universelle ?",
+                    "🕌 Pourquoi la ville de Jérusalem est-elle considérée comme sacrée par trois grandes religions ?",
+                    "📜 Que nous apprennent les parchemins et les pierres archéologiques trouvés dans son désert ?",
+                    "👣 Comment les récits d'hommes ayant marché sur cette terre il y a des millénaires résonnent-ils encore ?",
+                    "🏜️ Comment les habitants ont-ils réussi à transformer des zones désertiques en espaces agricoles ?",
+                    "🌊 Quelle est la particularité mystique de la mer Morte, où l'on flotte sans aucun effort ?",
+                    "🕊️ Pourquoi est-il si complexe de trouver un équilibre de paix là où tant de cultures se croisent ?",
+                    "🏛️ Comment les langues anciennes comme l'hébreu ont-elles pu renaître dans le monde moderne ?",
+                    "Olive🫒 Que symbolise le rameau d'olivier qui pousse sur ces collines depuis l'Antiquité ?",
+                    "💬 Comment le passé antique et les technologies de pointe cohabitent-ils dans ce paysage ?"
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-monde');
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('close-btn');
+            const drawerTitle = document.getElementById('drawer-title');
+            const questionsList = document.getElementById('questions-list');
+
+            function openDrawer(topicKey) {
+                const data = questionsData[topicKey];
+                if (!data) return;
+
+                drawerTitle.textContent = data.title;
+                questionsList.innerHTML = '';
+
+                data.questions.forEach((q, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'question-item';
+                    li.textContent = q;
+                    li.style.animationDelay = `${index * 0.05}s`;
+                    questionsList.appendChild(li);
+                });
+
+                drawer.classList.add('open');
+                overlay.classList.add('visible');
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const topic = card.getAttribute('data-topic');
+                    openDrawer(topic);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeDrawer);
+            overlay.addEventListener('click', closeDrawer);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDrawer();
+            });
+        });
+    </script>
+</body>
+</html>
