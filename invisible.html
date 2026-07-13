@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Invisible - Le Labo des Curieux</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
+
+        :root {
+            --bg-invisible: #0f172a; /* Fond plus sombre pour l'invisible */
+            --text-light: #f1f5f9;
+            --accent-purple: #a29bfe;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-invisible);
+            color: var(--text-light);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: var(--accent-purple);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-purple);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid var(--accent-purple);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-purple);
+            color: white;
+        }
+
+        .grid-invisible {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-inv {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+        .card-inv:hover {
+            transform: scale(1.03);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .card-inv img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            filter: grayscale(30%) brightness(80%);
+            transition: 0.5s;
+        }
+
+        .card-inv:hover img {
+            filter: grayscale(0%) brightness(100%);
+        }
+
+        .card-inv-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-inv-content h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card-inv-content p {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
+
+    <header>
+        <h1>L'Invisible ✨</h1>
+        <p>Ce que nos yeux ne voient pas, mais que notre esprit peut imaginer...</p>
+    </header>
+
+    <main class="grid-invisible">
+        
+        <div class="card-inv">
+            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=600&q=80" alt="Galaxies">
+            <div class="card-inv-content">
+                <h2>L'infiniment Grand</h2>
+                <p>Où s'arrête le ciel ? Explore les secrets des galaxies géantes et de l'espace qui s'étend sans fin.</p>
+            </div>
+        </div>
+
+        <div class="card-inv">
+            <img src="https://images.unsplash.com/photo-1532187875605-183821245234?auto=format&fit=crop&w=600&q=80" alt="Atomes">
+            <div class="card-inv-content">
+                <h2>L'infiniment Petit</h2>
+                <p>Voyage au cœur de l'atome et des cellules. Comment des choses si petites peuvent-elles construire tout notre monde ?</p>
+            </div>
+        </div>
+
+        <div class="card-inv">
+            <img src="https://images.unsplash.com/photo-1499209974431-9dac32a3a60d?auto=format&fit=crop&w=600&q=80" alt="Lumière">
+            <div class="card-inv-content">
+                <h2>Dieu</h2>
+                <p>Une présence, une énergie ou une histoire ? Questionne-toi sur ce que ce nom signifie pour les hommes depuis toujours.</p>
+            </div>
+        </div>
+
+        <div class="card-inv">
+            <img src="https://images.unsplash.com/photo-1515023115689-589c33041d3c?auto=format&fit=crop&w=600&q=80" alt="Méditation">
+            <div class="card-inv-content">
+                <h2>La Foi</h2>
+                <p>Croire sans voir, est-ce un super-pouvoir ? Découvre ce qui nous donne de la force à l'intérieur.</p>
+            </div>
+        </div>
+
+        <div class="card-inv">
+            <img src="https://images.unsplash.com/photo-1516331138075-f3ad16d69762?auto=format&fit=crop&w=600&q=80" alt="Vent">
+            <div class="card-inv-content">
+                <h2>Le Mystère de l'Invisibilité</h2>
+                <p>Le vent, les ondes, l'amour... Pourquoi certaines choses les plus importantes sont-elles invisibles ?</p>
+            </div>
+        </div>
+
+        <div class="card-inv">
+            <img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&w=600&q=80" alt="Trou Noir">
+            <div class="card-inv-content">
+                <h2>Le Néant</h2>
+                <p>Le "Rien" existe-t-il vraiment ? Plonge dans la question la plus vertigineuse de la philosophie.</p>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+</html>
