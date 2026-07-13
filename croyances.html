@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Croyances et Mythes - Le Labo des Curieux</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
+
+        :root {
+            --bg-croyances: #110c26; /* Fond indigo/violet nuit très profond */
+            --text-light: #f1f5f9;
+            --accent-gold: #f59e0b;
+            --drawer-bg: #1e1b4b;
+            --card-hover-bg: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background-color: var(--bg-croyances);
+            color: var(--text-light);
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: bold;
+            border: 1px solid var(--accent-gold);
+            padding: 10px 20px;
+            border-radius: 50px;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: var(--accent-gold);
+            color: var(--bg-croyances);
+        }
+
+        .grid-croyances {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-cro {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            overflow: hidden;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .card-cro:hover {
+            transform: translateY(-5px);
+            background: var(--card-hover-bg);
+        }
+
+        .card-cro img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            filter: brightness(75%);
+            transition: 0.5s;
+        }
+
+        .card-cro:hover img {
+            filter: brightness(100%) scale(1.03);
+        }
+
+        .card-cro-content {
+            padding: 25px;
+            text-align: center;
+        }
+
+        .card-cro-content h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .card-cro-content p {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+        }
+
+        /* --- PANNEAU COULISSANT (DRAWER) --- */
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100vh;
+            background-color: var(--drawer-bg);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+            transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-family: 'Fredoka', sans-serif;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-gold);
+            color: var(--bg-croyances);
+            border-color: var(--accent-gold);
+        }
+
+        .drawer-title {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            color: var(--accent-gold);
+            margin: 20px 0 30px 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+
+        .questions-list {
+            list-style: none;
+            overflow-y: auto;
+            flex-grow: 1;
+            padding-right: 10px;
+        }
+
+        .question-item {
+            font-size: 1.1rem;
+            line-height: 1.5;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            animation: slideInQuestion 0.4s ease forwards;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        @keyframes slideInQuestion {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s;
+            z-index: 999;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay" id="overlay"></div>
+
+    <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
+
+    <header>
+        <h1>Croyances et Mythes ✨</h1>
+        <p>Depuis la nuit des temps, l'humanité cherche à expliquer le sens de la vie à travers des convictions et des récits sacrés. Qu'en penses-tu ?</p>
+    </header>
+
+    <main class="grid-croyances">
+        
+        <div class="card-cro" data-topic="monotheisme">
+            <img src="https://images.unsplash.com/photo-1548625361-155deee223cb?auto=format&fit=crop&w=600&q=80" alt="Lumière perçant à travers une coupole antique">
+            <div class="card-cro-content">
+                <h2>Le monothéisme</h2>
+                <p>La vision d'une force créatrice unique, architecte suprême de l'univers tout entier.</p>
+            </div>
+        </div>
+
+        <div class="card-cro" data-topic="atheisme">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80" alt="Univers scientifique et équations du vide">
+            <div class="card-cro-content">
+                <h2>L’athéisme</h2>
+                <p>Et si l'univers s'expliquait uniquement par les lois de la nature et de la science, sans intervention divine ?</p>
+            </div>
+        </div>
+
+        <div class="card-cro" data-topic="polytheisme">
+            <img src="https://images.unsplash.com/photo-1564399579883-451a5d44ff08?auto=format&fit=crop&w=600&q=80" alt="Temple grec ou panthéon des dieux">
+            <div class="card-cro-content">
+                <h2>Le polythéisme</h2>
+                <p>Un monde régi par de multiples divinités aux pouvoirs uniques représentant les forces de la nature.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- --- LE PANNEAU LATÉRAL --- -->
+    <div class="drawer" id="drawer">
+        <button class="close-btn" id="close-btn">Fermer ✖</button>
+        <h2 class="drawer-title" id="drawer-title">Croyances</h2>
+        <ul class="questions-list" id="questions-list">
+            <!-- Les questions s'insèrent ici dynamiquement -->
+        </ul>
+    </div>
+
+    <!-- --- LOGIQUE JAVASCRIPT --- -->
+    <script>
+        const questionsData = {
+            monotheisme: {
+                title: "Le monothéisme ☝️",
+                questions: [
+                    "✨ Si Dieu est unique et a tout créé, pourquoi a-t-il laissé s'installer le doute dans l'esprit des humains ?",
+                    "🗺️ Comment expliquer que les hommes décrivent le Dieu unique de manières si différentes à travers le globe ?",
+                    "⏳ Si Dieu existait avant le début du monde, qu'y avait-il à la place du temps et de l'espace ?",
+                    "📜 Les textes sacrés doivent-ils être lus comme des récits historiques exacts ou de grandes images poétiques ?",
+                    "🗣️ Quand quelqu'un prie dans sa tête, comment une force unique peut-elle écouter des millions de voix en même temps ?",
+                    "🕊️ Si cette force supérieure veut la paix, pourquoi les humains se disputent-ils si souvent en son nom ?",
+                    "👁️ Peut-on croire fermement en quelque chose sans jamais en avoir reçu de preuve visible ?",
+                    "🎨 Si Dieu a créé l'être humain à son image, cela concerne-t-il notre corps physique ou notre imagination ?",
+                    "🌿 Si le Créateur protège la nature, pourquoi a-t-il donné tant de liberté destructrice à l'homme ?",
+                    "🌌 Penser qu'une seule intelligence gère tout l'univers est-ce rassurant ou vertigineux ?"
+                ]
+            },
+            atheisme: {
+                title: "L'athéisme 🔬",
+                questions: [
+                    "⚛️ Si la science réussit un jour à expliquer la naissance de l'univers, la notion de Dieu disparaîtra-t-elle ?",
+                    "🌱 Sans l'idée d'un paradis après la mort, la vie terrestre prend-elle plus ou moins de valeur ?",
+                    "📜 D'où vient notre sens du bien et du mal s'il n'a pas été dicté à l'origine par des lois sacrées ?",
+                    "🛸 L'athéisme est-il une forme de croyance en la toute-puissance de la logique humaine ?",
+                    "💥 Si le Big Bang est un accident de la physique, notre existence a-t-elle un sens précis ou est-elle fortuite ?",
+                    "🏛️ Pourquoi les humains ressentent-ils presque toujours le besoin d'inventer des histoires mystiques pour se rassurer ?",
+                    "🧠 Peut-on s'émerveiller devant la beauté d'un coucher de soleil sans y chercher une origine magique ?",
+                    "🕯️ Un athée peut-il être profondément spirituel et chercher la paix intérieure sans croire en un Dieu ?",
+                    "⏳ Est-ce l'angoisse du vide et de la fin de la vie qui pousse l'être humain à espérer une présence invisible ?",
+                    "⚙️ La nature a-t-elle besoin d'un horloger pour fonctionner, ou fait-elle tourner ses rouages toute seule ?"
+                ]
+            },
+            polytheisme: {
+                title: "Le polythéisme 🔱",
+                questions: [
+                    "⚡ Pourquoi les civilisations antiques (Grecs, Égyptiens) attribuaient-elles chaque émotion à un dieu différent ?",
+                    "🌊 Si la mer a son propre dieu et le feu le sien, comment font-ils pour s'entendre lors d'une tempête ?",
+                    "🎭 Pourquoi les dieux des mythologies avaient-ils les mêmes défauts que les humains (jalousie, colère, ruse) ?",
+                    "🏛️ Si les statues des dieux d'autrefois ne sont plus priées aujourd'hui, où sont parties leurs histoires ?",
+                    "☀️ Adorer le Soleil, la Lune ou la Terre comme des divinités n'était-il pas une façon de respecter l'écologie ?",
+                    "🏹 Est-ce plus facile de confier ses problèmes à plusieurs dieux spécialisés plutôt qu'à un seul être absolu ?",
+                    "🌟 Les super-héros des bandes dessinées d'aujourd'hui ne sont-ils pas les nouveaux dieux du polythéisme moderne ?",
+                    "🌲 Les esprits de la forêt et des rivières dont parlent les légendes anciennes existent-ils sous une autre forme ?",
+                    "📜 Comment les mythes de Thor, de Zeus ou d'Anubis ont-ils réussi à traverser des millénaires jusqu'à nos jeux vidéo ?",
+                    "🌌 Si le monde est immense et diversifié, une équipe de divinités n'est-elle pas une explication logique pour les anciens ?"
+                ]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.card-cro');
+            const drawer = document.getElementById('drawer');
+            const overlay = document.getElementById('overlay');
+            const closeBtn = document.getElementById('close-btn');
+            const drawerTitle = document.getElementById('drawer-title');
+            const questionsList = document.getElementById('questions-list');
+
+            function openDrawer(topicKey) {
+                const data = questionsData[topicKey];
+                if (!data) return;
+
+                drawerTitle.textContent = data.title;
+                questionsList.innerHTML = '';
+
+                data.questions.forEach((q, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'question-item';
+                    li.textContent = q;
+                    li.style.animationDelay = `${index * 0.05}s`;
+                    questionsList.appendChild(li);
+                });
+
+                drawer.classList.add('open');
+                overlay.classList.add('visible');
+            }
+
+            function closeDrawer() {
+                drawer.classList.remove('open');
+                overlay.classList.remove('visible');
+            }
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const topic = card.getAttribute('data-topic');
+                    openDrawer(topic);
+                });
+            });
+
+            closeBtn.addEventListener('click', closeDrawer);
+            overlay.addEventListener('click', closeDrawer);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeDrawer();
+            });
+        });
+    </script>
+</body>
+</html>
