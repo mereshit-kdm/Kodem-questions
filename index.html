@@ -42,6 +42,7 @@
             text-align: center;
             padding: 60px 20px 40px 20px;
             max-width: 800px;
+            width: 100%;
         }
 
         header h1 {
@@ -60,6 +61,38 @@
             font-size: 1.2rem;
             color: #cbd5e1;
             line-height: 1.6;
+        }
+
+        /* --- AJOUT : Style de la barre de recherche sous la description --- */
+        .search-container {
+            max-width: 550px;
+            margin: 30px auto 0 auto;
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 16px 24px;
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            color: var(--text-light);
+            outline: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: #64748b;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-purple);
+            box-shadow: 0 0 15px rgba(162, 155, 254, 0.3);
+            background-color: rgba(255, 255, 255, 0.08);
         }
 
         .grid-categories {
@@ -181,6 +214,142 @@
             color: #64748b;
             text-align: center;
         }
+
+        /* --- AJOUT : Style du Drawer (Panneau Latéral) & Overlay --- */
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .drawer-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .drawer {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 420px;
+            max-width: 100%;
+            height: 100%;
+            background-color: #111827; /* Teinte sombre coordonnée */
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .drawer.open {
+            right: 0;
+        }
+
+        .drawer-header {
+            padding: 24px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0f172a;
+        }
+
+        .drawer-header h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            color: var(--text-light);
+        }
+
+        .drawer-close-btn {
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .drawer-close-btn:hover {
+            color: var(--text-light);
+        }
+
+        .drawer-results {
+            padding: 24px;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        /* Cartes de questions dans le Drawer */
+        .question-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .question-card:hover {
+            border-color: var(--accent-purple);
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .question-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .q-badge {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        .badge-cat {
+            background-color: rgba(162, 155, 254, 0.15);
+            color: var(--accent-purple);
+            border: 1px solid rgba(162, 155, 254, 0.3);
+        }
+
+        .badge-subcat {
+            background-color: rgba(110, 231, 183, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(110, 231, 183, 0.3);
+        }
+
+        .question-card h4 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            color: var(--text-light);
+        }
+
+        .question-card p {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.5;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #64748b;
+            margin-top: 50px;
+            font-size: 1rem;
+        }
     </style>
 </head>
 <body>
@@ -188,6 +357,17 @@
     <header>
         <h1>Le Labo des <span>Curieux</span> 🧪</h1>
         <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers, de la pensée humaine, des croyances et du temps.</p>
+        
+        <!-- AJOUT : La barre de recherche ajoutée juste en bas de la description -->
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="search-input" 
+                class="search-input" 
+                placeholder="🔍 Rechercher une question, une sous-catégorie..."
+                autocomplete="off"
+            >
+        </div>
     </header>
 
     <main class="grid-categories">
@@ -210,7 +390,7 @@
             </div>
             <div class="card-body">
                 <h2>Se questionner sur l'Au-delà 🌌</h2>
-                <p>Voyage aux limites de notre réalité : au-delà de la mort, du temps, de l'espace et de l'univers.</p>
+                <p>Voyage aux limites de notre reality : au-delà de la mort, du temps, de l'espace et de l'univers.</p>
             </div>
         </a>
 
@@ -271,9 +451,133 @@
 
     </main>
 
+    <!-- AJOUT : Drawer (Panneau Latéral) & Overlay pour la recherche -->
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+    <div id="search-drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Résultats (<span id="results-count">0</span>)</h3>
+            <button id="close-drawer" class="drawer-close-btn">&times;</button>
+        </div>
+        <div id="drawer-content" class="drawer-results">
+            <!-- Emplacement des questions filtrées -->
+        </div>
+    </div>
+
     <footer>
-        <p>© 2026 Le Labo des Curieux — Développé sur la branche develop-v1.0</p>
+        <p>© 2026 Le Labo des Curieux — Développé sur la branche develop-v1.1</p>
     </footer>
 
+    <!-- SCRIPT DU MOTEUR DE RECHERCHE -->
+    <script>
+        // Base de données structurée contenant vos questions/réponses par catégorie et sous-catégorie
+        const database = [
+            {
+                category: "L'Invisible",
+                subcategory: "Infiniment petit",
+                question: "Qu'est-ce que la matière noire ?",
+                info: "Une forme de matière hypothétique invisible qui composerait une grande partie de la masse de l'univers."
+            },
+            {
+                category: "L'Invisible",
+                subcategory: "Forces secrètes",
+                question: "D'où vient l'intuition ?",
+                info: "Une perception rapide ou un savoir immédiat qui court-circuite le raisonnement logique conscient."
+            },
+            {
+                category: "Se questionner sur l'Au-delà",
+                subcategory: "Après la mort",
+                question: "Qu'est-ce qu'une expérience de mort imminente (EMI) ?",
+                info: "Un ensemble de sensations vécues par certains individus lors d'un état de conscience altéré ou d'une mort clinique temporaire."
+            },
+            {
+                category: "Se questionner sur moi-même",
+                subcategory: "La Conscience",
+                question: "Qui suis-je vraiment sans mes souvenirs ?",
+                info: "Une question centrale en philosophie de l'esprit qui interroge si l'identité repose sur la mémoire ou sur l'expérience du moment présent."
+            },
+            {
+                category: "Se questionner sur le monde",
+                subcategory: "Civilisations disparues",
+                question: "Quel est le mystère de l'Atlantide ?",
+                info: "Une île mythique évoquée par Platon, symbole d'une civilisation avancée engloutie par les flots à la suite d'un cataclysme."
+            }
+        ];
+
+        // Récupération des éléments DOM
+        const searchInput = document.getElementById('search-input');
+        const drawer = document.getElementById('search-drawer');
+        const overlay = document.getElementById('drawer-overlay');
+        const closeBtn = document.getElementById('close-drawer');
+        const drawerContent = document.getElementById('drawer-content');
+        const resultsCount = document.getElementById('results-count');
+
+        // Fonctions d'ouverture / fermeture du panneau
+        function openDrawer() {
+            drawer.classList.add('open');
+            overlay.classList.add('active');
+        }
+
+        function closeDrawer() {
+            drawer.classList.remove('open');
+            overlay.classList.remove('active');
+        }
+
+        // Système de filtrage
+        function runSearch(query) {
+            const cleanQuery = query.toLowerCase().trim();
+
+            if (cleanQuery === '') {
+                closeDrawer();
+                return;
+            }
+
+            // Filtre par rapport à la question, la catégorie ou la sous-catégorie
+            const matches = database.filter(item => {
+                return item.question.toLowerCase().includes(cleanQuery) ||
+                       item.category.toLowerCase().includes(cleanQuery) ||
+                       item.subcategory.toLowerCase().includes(cleanQuery);
+            });
+
+            resultsCount.textContent = matches.length;
+            drawerContent.innerHTML = '';
+
+            if (matches.length === 0) {
+                drawerContent.innerHTML = `
+                    <div class="no-results">
+                        <p>Aucun mystère ne correspond à votre recherche.</p>
+                    </div>
+                `;
+            } else {
+                matches.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'question-card';
+                    card.innerHTML = `
+                        <div class="question-badges">
+                            <span class="q-badge badge-cat">${item.category}</span>
+                            <span class="q-badge badge-subcat">${item.subcategory}</span>
+                        </div>
+                        <h4>${item.question}</h4>
+                        <p>${item.info}</p>
+                    `;
+                    drawerContent.appendChild(card);
+                });
+            }
+
+            openDrawer();
+        }
+
+        // Écouteurs d'événements
+        searchInput.addEventListener('input', (e) => {
+            runSearch(e.target.value);
+        });
+
+        closeBtn.addEventListener('click', closeDrawer);
+        overlay.addEventListener('click', closeDrawer);
+
+        // Fermeture automatique à l'aide de la touche Échap
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeDrawer();
+        });
+    </script>
 </body>
 </html>
