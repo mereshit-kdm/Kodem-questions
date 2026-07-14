@@ -1,36 +1,45 @@
 import { supabase } from './supabase-client.js'
 
-/**
- * Récupère une catégorie, ses sous-catégories et toutes les questions associées.
- * @param {string} categoryTitle - Le titre exact de la catégorie (ex: 'Se questionner sur soi-même')
- */
-export async function fetchCategoryData(categoryTitle) {
-    const { data, error } = await supabase
-        .from('categories')
-        .select(`
-            id,
-            title,
-            subcategories (
-                id,
-                name,
-                questions (
-                    id,
-                    title,
-                    content,
-                    author,
-                    publication_date
-                )
-            )
-        `)
-        .eq('title', categoryTitle)
-        .single(); // On attend un seul résultat pour cette catégorie
 
-    if (error) {
-        console.error(`Erreur lors de la récupération de la catégorie "${categoryTitle}":`, error);
-        return null;
-    }
-    return data;
+/**
+ * Récupère une catégorie, ses sous-catégories et ses questions par son ID.
+ * @param {number} categoryId - L'identifiant unique (ex: 1)
+ */
+export async function fetchCategoryDataById(categoryId) {
+  const { data, error } = await supabase
+    .from('categories')
+    .select(`
+      id,
+      title,
+      description,
+      subcategories (
+        id,
+        name,
+        description,
+        questions (
+          id,
+          title,
+          author,
+          publication_date,
+          created_at,
+          questions_themes (
+            themes (
+              nom
+            )
+          )
+        )
+      )
+    `)
+    .eq('id', categoryId)
+    .single();
+
+  if (error) {
+    console.error("Erreur fetchCategoryDataById:", error);
+    return null;
+  }
+  return data;
 }
+
 
 /**
  * Génère le code HTML et l'injecte dans la page en séparant les questions par sous-catégorie.
@@ -96,12 +105,12 @@ export function subscribeToRealtime(categoryTitle, containerId) {
 }
 
 /**
- * Récupère toutes les catégories de la base de données
+ * Récupère toutes les catégories de la base de données (inclut l'image_url)
  */
 export async function fetchAllCategories() {
     const { data, error } = await supabase
         .from('categories')
-        .select('id, title, description, class_theme, link_url, type')
+        .select('id, title, description, class_theme, link_url, type, image_url') // Ajout de image_url ici
         .order('id', { ascending: true });
 
     if (error) {
@@ -112,7 +121,7 @@ export async function fetchAllCategories() {
 }
 
 /**
- * Génère le HTML pour afficher les catégories sous forme de cartes cliquables
+ * Génère le HTML pour afficher les catégories sous forme de cartes cliquables avec leurs images
  * @param {Array} categories - Liste des catégories récupérées
  * @param {string} containerId - L'ID de l'élément HTML cible
  */
@@ -125,14 +134,38 @@ export function displayCategoriesGrid(categories, containerId) {
         return;
     }
 
-    container.innerHTML = categories.map(cat => `
-        <a href="${cat.link_url || '#'}" class="category-card ${cat.class_theme || 'default-theme'}">
-            <div class="category-card-content">
-                <span class="category-type">${cat.type === 'question' ? '🤔 Questionner' : cat.type}</span>
-                <h3 class="category-card-title">${cat.title}</h3>
-                ${cat.description ? `<p class="category-card-description">${cat.description}</p>` : ''}
-            </div>
-        </a>
-    `).join('');
+    container.innerHTML = categories.map(cat => {
+        // Image par défaut si image_url est vide (NULL) dans la base
+        const imageUrl = cat.image_url || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=600&auto=format&fit=crop';
+
+        return `
+            <a href="${cat.link_url || '#'}" class="category-card ${cat.class_theme || 'default-theme'}">
+                <div class="card-image-wrapper">
+                    <img src="${imageUrl}" alt="${cat.title}" class="category-img" loading="lazy" />
+                </div>
+                <div class="category-card-content">
+                    <span class="category-type">${cat.type === 'question' ? '🤔 Questionner' : cat.type}</span>
+                    <h3 class="category-card-title">${cat.title}</h3>
+                    ${cat.description ? `<p class="category-card-description">${cat.description}</p>` : ''}
+                </div>
+            </a>
+        `;
+    }).join('');
 }
 
+/**
+ * Récupère les questions associées à une catégorie spécifique
+ * @param {string} categoryId - L'identifiant de la catégorie
+ */
+export async function fetchQuestionsByCategory(categoryId) {
+    const { data, error } = await supabase
+        .from('questions')
+        .select('*')
+        .eq('category_id', categoryId); // Exemple de filtre
+
+    if (error) {
+        console.error('Erreur récupération questions:', error);
+        return [];
+    }
+    return data;
+}
