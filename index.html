@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Le Labo des Curieux - Accueil</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght=300..700&family=Lexend:wght=300..900&display=swap');
 
         :root {
             --bg-labo: #0f172a; /* Fond sombre général */
@@ -63,7 +63,7 @@
             line-height: 1.6;
         }
 
-        /* --- AJOUT : Style de la barre de recherche sous la description --- */
+        /* --- Style de la barre de recherche --- */
         .search-container {
             max-width: 550px;
             margin: 30px auto 0 auto;
@@ -97,7 +97,7 @@
 
         .grid-categories {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             max-width: 1400px;
             width: 100%;
@@ -123,7 +123,7 @@
             background: var(--card-hover-bg);
         }
 
-        /* Styles spécifiques pour chaque carte (Ombrages et Bordures) */
+        /* Styles spécifiques pour chaque carte */
         .category-card.inv-theme:hover {
             box-shadow: 0 15px 30px rgba(162, 155, 254, 0.15);
             border-color: var(--accent-purple);
@@ -164,6 +164,7 @@
             width: 100%;
             height: 200px;
             overflow: hidden;
+            background: #1e293b;
         }
 
         .category-card img {
@@ -215,7 +216,7 @@
             text-align: center;
         }
 
-        /* --- AJOUT : Style du Drawer (Panneau Latéral) & Overlay --- */
+        /* --- Style du Drawer (Panneau Latéral) & Overlay --- */
         .drawer-overlay {
             position: fixed;
             top: 0;
@@ -242,7 +243,7 @@
             width: 420px;
             max-width: 100%;
             height: 100%;
-            background-color: #111827; /* Teinte sombre coordonnée */
+            background-color: #111827; 
             border-left: 1px solid rgba(255, 255, 255, 0.1);
             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
             transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
@@ -350,6 +351,14 @@
             margin-top: 50px;
             font-size: 1rem;
         }
+
+        .loading-text {
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #64748b;
+            padding: 40px;
+        }
     </style>
 </head>
 <body>
@@ -358,7 +367,6 @@
         <h1>Le Labo des <span>Curieux</span> 🧪</h1>
         <p>Bienvenue dans l'espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers, de la pensée humaine, des croyances et du temps.</p>
         
-        <!-- AJOUT : La barre de recherche ajoutée juste en bas de la description -->
         <div class="search-container">
             <input 
                 type="text" 
@@ -370,88 +378,12 @@
         </div>
     </header>
 
-    <main class="grid-categories">
-
-        <!-- CARTE : L'INVISIBLE -->
-        <a href="invisible.html" class="category-card inv-theme">
-            <div class="card-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1516331138075-f3ad16d69762?auto=format&fit=crop&w=600&q=80" alt="Mystère de l'invisible">
-            </div>
-            <div class="card-body">
-                <h2>L'Invisible ✨</h2>
-                <p>Explore ce que nos yeux ne perçoivent pas : de l'infiniment petit aux forces sacrées ou secrètes.</p>
-            </div>
-        </a>
-
-        <!-- CARTE : SE QUESTIONNER SUR L'AU-DELÀ -->
-        <a href="audela.html" class="category-card aud-theme">
-            <div class="card-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=600&q=80" alt="Espace et temps lointains">
-            </div>
-            <div class="card-body">
-                <h2>Se questionner sur l'Au-delà 🌌</h2>
-                <p>Voyage aux limites de notre reality : au-delà de la mort, du temps, de l'espace et de l'univers.</p>
-            </div>
-        </a>
-
-        <!-- CARTE : SE QUESTIONNER SUR MOI-MÊME -->
-        <a href="moimeme.html" class="category-card soi-theme">
-            <div class="card-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80" alt="Méditation et introspection">
-            </div>
-            <div class="card-body">
-                <h2>Se questionner sur moi-même 🧘‍♂️</h2>
-                <p>Plonge à l'intérieur de ton être : l'identité, les mystères de ta conscience et le secret de ton âme.</p>
-            </div>
-        </a>
-
-        <!-- CARTE : SE QUESTIONNER SUR LE MONDE -->
-        <a href="monde.html" class="category-card world-theme">
-            <div class="card-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80" alt="Exploration et mystères du monde">
-            </div>
-            <div class="card-body">
-                <h2>Se questionner sur le monde 🌍</h2>
-                <p>Explore l'histoire terrestre : les révolutions majeures, les secrets des civilisations et les énigmes géographiques.</p>
-            </div>
-        </a>
-
-        <!-- CARTE : SE QUESTIONNER SUR L'AVENIR -->
-        <a href="avenir.html" class="category-card ave-theme">
-            <div class="card-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=600&q=80" alt="Futur, temps et destin">
-            </div>
-            <div class="card-body">
-                <h2>Se questionner sur l'avenir 🔮</h2>
-                <p>Interroge demain et l'inconnu : le rôle du hasard, le mystère des prophéties et la force du destin.</p>
-            </div>
-        </a>
-
-        <!-- CARTE : SE QUESTIONNER SUR L'AUTRE -->
-        <a href="autre.html" class="category-card aut-theme">
-            <div class="card-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80" alt="Relations humaines et partage">
-            </div>
-            <div class="card-body">
-                <h2>Se questionner sur l'autre 👥</h2>
-                <p>Explore les mystères de l'empathie, la complexité du vivre-ensemble et les secrets des liens familiaux.</p>
-            </div>
-        </a>
-
-        <!-- CARTE : CROYANCES ET MYTHES -->
-        <a href="croyances.html" class="category-card cro-theme">
-            <div class="card-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1548625361-155deee223cb?auto=format&fit=crop&w=600&q=80" alt="Mysticisme, mythes et convictions">
-            </div>
-            <div class="card-body">
-                <h2>Croyances et Mythes 🧭</h2>
-                <p>Explore l'histoire de la foi et des convictions humaines : le monothéisme, l'athéisme et les panthéons polythéistes.</p>
-            </div>
-        </a>
-
+    <!-- CONSTRUCTEUR DYNAMIQUE DES CATÉGORIES -->
+    <main class="grid-categories" id="categories-container">
+        <p class="loading-text">Chargement des catégories de pensée...</p>
     </main>
 
-    <!-- AJOUT : Drawer (Panneau Latéral) & Overlay pour la recherche -->
+    <!-- Drawer (Panneau Latéral) & Overlay pour la recherche -->
     <div id="drawer-overlay" class="drawer-overlay"></div>
     <div id="search-drawer" class="drawer">
         <div class="drawer-header">
@@ -464,46 +396,27 @@
     </div>
 
     <footer>
-        <p>© 2026 Le Labo des Curieux — Développé sur la branche develop-v1.1</p>
+        <p>© 2026 Le Labo des Curieux — Développé sur la branche developer-v2</p>
     </footer>
 
-    <!-- SCRIPT DU MOTEUR DE RECHERCHE -->
-    <script>
-        // Base de données structurée contenant vos questions/réponses par catégorie et sous-catégorie
-        const database = [
-            {
-                category: "L'Invisible",
-                subcategory: "Infiniment petit",
-                question: "Qu'est-ce que la matière noire ?",
-                info: "Une forme de matière hypothétique invisible qui composerait une grande partie de la masse de l'univers."
-            },
-            {
-                category: "L'Invisible",
-                subcategory: "Forces secrètes",
-                question: "D'où vient l'intuition ?",
-                info: "Une perception rapide ou un savoir immédiat qui court-circuite le raisonnement logique conscient."
-            },
-            {
-                category: "Se questionner sur l'Au-delà",
-                subcategory: "Après la mort",
-                question: "Qu'est-ce qu'une expérience de mort imminente (EMI) ?",
-                info: "Un ensemble de sensations vécues par certains individus lors d'un état de conscience altéré ou d'une mort clinique temporaire."
-            },
-            {
-                category: "Se questionner sur moi-même",
-                subcategory: "La Conscience",
-                question: "Qui suis-je vraiment sans mes souvenirs ?",
-                info: "Une question centrale en philosophie de l'esprit qui interroge si l'identité repose sur la mémoire ou sur l'expérience du moment présent."
-            },
-            {
-                category: "Se questionner sur le monde",
-                subcategory: "Civilisations disparues",
-                question: "Quel est le mystère de l'Atlantide ?",
-                info: "Une île mythique évoquée par Platon, symbole d'une civilisation avancée engloutie par les flots à la suite d'un cataclysme."
-            }
-        ];
+    <!-- MOTEUR JS DYNAMIQUE SUPABASE (VITE MODULE) -->
+    <script type="module">
+        import { supabase } from './js/supabase-client.js';
+        import { fetchAllCategories } from './js/app.js';
 
-        // Récupération des éléments DOM
+        // Association d'images par défaut si image_url est absent en BDD
+        const categoryImages = {
+            'Se questionner sur soi-même': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80',
+            'Se questions sur le monde': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80',
+            'Se questions sur l’avenir': 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=600&q=80',
+            'Se questionner sur l’autre': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80',
+            'Se questions sur l’au-delà': 'https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=600&q=80',
+            'Se questionner sur l’invisible': 'https://images.unsplash.com/photo-1516331138075-f3ad16d69762?auto=format&fit=crop&w=600&q=80',
+            'Se questionner sur les croyances': 'https://images.unsplash.com/photo-1548625361-155deee223cb?auto=format&fit=crop&w=600&q=80'
+        };
+
+        // DOM Elements
+        const categoriesContainer = document.getElementById('categories-container');
         const searchInput = document.getElementById('search-input');
         const drawer = document.getElementById('search-drawer');
         const overlay = document.getElementById('drawer-overlay');
@@ -511,7 +424,37 @@
         const drawerContent = document.getElementById('drawer-content');
         const resultsCount = document.getElementById('results-count');
 
-        // Fonctions d'ouverture / fermeture du panneau
+        // Initialisation de la page d'accueil
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. Récupérer et afficher les catégories dynamiquement
+            const categories = await fetchAllCategories();
+            renderCategories(categories);
+        });
+
+        // Fonction d'affichage des catégories dynamiques
+        function renderCategories(categoriesList) {
+            if (categoriesList.length === 0) {
+                categoriesContainer.innerHTML = '<p class="loading-text">Aucune catégorie trouvée en base de données.</p>';
+                return;
+            }
+
+            categoriesContainer.innerHTML = categoriesList.map(cat => {
+                const imgUrl = cat.image_url || categoryImages[cat.title] || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80';
+                return `
+                    <a href="${cat.link_url || '#'}" class="category-card ${cat.class_theme || 'default-theme'}">
+                        <div class="card-image-wrapper">
+                            <img src="${imgUrl}" alt="${cat.title}">
+                        </div>
+                        <div class="card-body">
+                            <h2>${cat.title}</h2>
+                            <p>${cat.description || ''}</p>
+                        </div>
+                    </a>
+                `;
+            }).join('');
+        }
+
+        // --- Fonctions d'ouverture / fermeture du Drawer ---
         function openDrawer() {
             drawer.classList.add('open');
             overlay.classList.add('active');
@@ -522,42 +465,60 @@
             overlay.classList.remove('active');
         }
 
-        // Système de filtrage
-        function runSearch(query) {
-            const cleanQuery = query.toLowerCase().trim();
+        // --- Moteur de recherche global en direct sur Supabase ---
+        async function runSearch(query) {
+            const cleanQuery = query.trim();
 
             if (cleanQuery === '') {
                 closeDrawer();
                 return;
             }
 
-            // Filtre par rapport à la question, la catégorie ou la sous-catégorie
-            const matches = database.filter(item => {
-                return item.question.toLowerCase().includes(cleanQuery) ||
-                       item.category.toLowerCase().includes(cleanQuery) ||
-                       item.subcategory.toLowerCase().includes(cleanQuery);
-            });
+            // Requête globale Supabase avec Jointure pour avoir les détails des sous-catégories et des catégories associées
+            const { data: matchedQuestions, error } = await supabase
+                .from('questions')
+                .select(`
+                    id,
+                    title,
+                    content,
+                    subcategories (
+                        name,
+                        categories (
+                            title
+                        )
+                    )
+                `)
+                // Recherche plein texte simple sur la question ou le contenu
+                .or(`title.ilike.%${cleanQuery}%,content.ilike.%${cleanQuery}%`);
 
-            resultsCount.textContent = matches.length;
+            if (error) {
+                console.error('Erreur de recherche :', error);
+                return;
+            }
+
+            resultsCount.textContent = matchedQuestions.length;
             drawerContent.innerHTML = '';
 
-            if (matches.length === 0) {
+            if (matchedQuestions.length === 0) {
                 drawerContent.innerHTML = `
                     <div class="no-results">
                         <p>Aucun mystère ne correspond à votre recherche.</p>
                     </div>
                 `;
             } else {
-                matches.forEach(item => {
+                matchedQuestions.forEach(q => {
+                    const categoryName = q.subcategories?.categories?.title || 'Non spécifié';
+                    const subcategoryName = q.subcategories?.name || 'Non spécifié';
+
                     const card = document.createElement('div');
                     card.className = 'question-card';
                     card.innerHTML = `
                         <div class="question-badges">
-                            <span class="q-badge badge-cat">${item.category}</span>
-                            <span class="q-badge badge-subcat">${item.subcategory}</span>
+                            <span class="q-badge badge-cat">${categoryName}</span>
+                            <span class="q-badge badge-subcat">${subcategoryName}</span>
                         </div>
-                        <h4>${item.question}</h4>
-                        <p>${item.info}</p>
+                        <h4>${q.title}</h4>
+                        <p>${q.content || ''}</p>
                     `;
                     drawerContent.appendChild(card);
                 });
@@ -574,7 +535,6 @@
         closeBtn.addEventListener('click', closeDrawer);
         overlay.addEventListener('click', closeDrawer);
 
-        // Fermeture automatique à l'aide de la touche Échap
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeDrawer();
         });
