@@ -8,19 +8,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
 
         :root {
-            --bg-monde: #2d0f02; /* Fond terre cuite / marron très profond */
+            --bg-monde: #3b2304;
             --text-light: #f1f5f9;
-            --accent-orange: #ff9f43;
-            --drawer-bg: #4a1c09;
+            --accent-world: #ff9f43;
+            --drawer-bg: #5c380b;
             --card-hover-bg: rgba(255, 255, 255, 0.08);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Lexend', sans-serif;
             background-color: var(--bg-monde);
@@ -30,34 +25,21 @@
             overflow-x: hidden;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        h1 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 3.5rem;
-            color: var(--accent-orange);
-            margin-bottom: 20px;
-        }
+        header { text-align: center; padding: 40px 20px; }
+        h1 { font-family: 'Fredoka', sans-serif; font-size: 3.5rem; color: var(--accent-world); margin-bottom: 20px; }
 
         .back-btn {
             display: inline-block;
             margin-bottom: 20px;
-            color: var(--accent-orange);
+            color: var(--accent-world);
             text-decoration: none;
             font-weight: bold;
-            border: 1px solid var(--accent-orange);
+            border: 1px solid var(--accent-world);
             padding: 10px 20px;
             border-radius: 50px;
             transition: all 0.3s;
         }
-
-        .back-btn:hover {
-            background: var(--accent-orange);
-            color: var(--bg-monde);
-        }
+        .back-btn:hover { background: var(--accent-world); color: var(--bg-monde); }
 
         .grid-monde {
             display: grid;
@@ -75,320 +57,271 @@
             transition: transform 0.3s, background-color 0.3s;
             cursor: pointer;
         }
-
-        .card-monde:hover {
-            transform: translateY(-5px);
-            background: var(--card-hover-bg);
-        }
-
-        .card-monde img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            filter: brightness(80%);
-            transition: 0.5s;
-        }
-
-        .card-monde:hover img {
-            filter: brightness(100%) scale(1.03);
-        }
-
-        .card-monde-content {
-            padding: 20px;
-            text-align: center;
-        }
-
-        .card-monde-content h2 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-        }
-
-        .card-monde-content p {
-            font-size: 0.95rem;
-            color: #cbd5e1;
-            line-height: 1.5;
-        }
+        .card-monde:hover { transform: translateY(-5px); background: var(--card-hover-bg); }
+        .card-monde img { width: 100%; height: 220px; object-fit: cover; filter: brightness(80%); transition: 0.5s; }
+        .card-monde:hover img { filter: brightness(100%) scale(1.03); }
+        .card-monde-content { padding: 25px; text-align: center; }
+        .card-monde-content h2 { font-family: 'Fredoka', sans-serif; font-size: 1.8rem; margin-bottom: 10px; }
+        .card-monde-content p { font-size: 1rem; color: #cbd5e1; line-height: 1.5; }
 
         /* --- PANNEAU COULISSANT (DRAWER) --- */
         .drawer {
             position: fixed;
             top: 0;
-            right: -450px;
-            width: 450px;
+            right: -500px;
+            width: 500px;
             max-width: 100%;
             height: 100vh;
             background-color: var(--drawer-bg);
             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
             transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 1000;
-            padding: 40px 30px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
         }
+        .drawer.open { right: 0; }
 
-        .drawer.open {
-            right: 0;
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
-
         .close-btn {
-            align-self: flex-end;
             background: none;
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-light);
-            font-size: 1.5rem;
+            font-size: 1rem;
             cursor: pointer;
             padding: 5px 15px;
             border-radius: 50px;
             font-family: 'Fredoka', sans-serif;
             transition: all 0.3s;
         }
-
-        .close-btn:hover {
-            background: var(--accent-orange);
-            color: var(--bg-monde);
-            border-color: var(--accent-orange);
-        }
+        .close-btn:hover { background: var(--accent-world); color: var(--bg-monde); border-color: var(--accent-world); }
 
         .drawer-title {
             font-family: 'Fredoka', sans-serif;
             font-size: 1.8rem;
-            color: var(--accent-orange);
-            margin: 20px 0 30px 0;
+            color: var(--accent-world);
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
+        /* --- RECHERCHE ET TRI --- */
+        .drawer-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 15px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.95rem;
+        }
+        .search-input:focus { outline: none; border-color: var(--accent-world); }
+        .sort-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .sort-btn:hover { background: var(--accent-world); color: var(--bg-monde); }
+
+        /* --- LISTE DES QUESTIONS --- */
         .questions-list {
             list-style: none;
             overflow-y: auto;
             flex-grow: 1;
-            padding-right: 10px;
+            padding-right: 5px;
         }
-
         .question-item {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             animation: slideInQuestion 0.4s ease forwards;
             opacity: 0;
             transform: translateX(20px);
         }
+        @keyframes slideInQuestion { to { opacity: 1; transform: translateX(0); } }
 
-        @keyframes slideInQuestion {
-            to { opacity: 1; transform: translateX(0); }
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
         }
+        .question-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        .meta-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .meta-tag.date { border-color: rgba(255, 159, 67, 0.3); color: var(--accent-world); }
 
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0, 0, 0, 0.6);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s;
-            z-index: 999;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.4s; z-index: 999;
         }
-
-        .overlay.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .overlay.visible { opacity: 1; pointer-events: auto; }
     </style>
 </head>
 <body>
 
     <div class="overlay" id="overlay"></div>
-
     <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
 
     <header>
         <h1>Se questionner sur le monde 🌍</h1>
-        <p>Notre planète regorge d'histoires fascinantes, de mystères inexpliqués et de bouleversements. Clique sur un thème pour l'explorer.</p>
+        <p>Prends du recul sur la société, l'environnement et l'immensité de notre planète.</p>
     </header>
 
     <main class="grid-monde">
-        
-        <div class="card-monde" data-topic="vainqueurs">
-            <img src="https://images.unsplash.com/photo-1599733589046-10c005739ef9?auto=format&fit=crop&w=600&q=80" alt="Statue historique antique">
+        <div class="card-monde" data-topic="civilisations">
+            <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80" alt="Mystères du monde antiques">
             <div class="card-monde-content">
-                <h2>Les vainqueurs qui ont fait l’histoire</h2>
-                <p>Est-ce que l'histoire est toujours écrite par ceux qui gagnent les batailles ?</p>
+                <h2>Les civilisations</h2>
+                <p>Pourquoi les grands empires naissent-ils, brillent-ils puis finissent-ils par s'effondrer ?</p>
             </div>
         </div>
-
-        <div class="card-monde" data-topic="bermude">
-            <img src="https://images.unsplash.com/photo-1505118380757-91f5f5632de0?auto=format&fit=crop&w=600&q=80" alt="Océan mystérieux">
-            <div class="card-monde-content">
-                <h2>Le triangle de Bermude</h2>
-                <p>Secrets de l'océan, boussoles affolées et disparitions mystérieuses en haute mer.</p>
-            </div>
-        </div>
-
-        <div class="card-monde" data-topic="merveilles">
-            <img src="https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80" alt="Pyramides d'Egypte">
-            <div class="card-monde-content">
-                <h2>Les sept merveilles du monde</h2>
-                <p>Comment les humains de l'Antiquité ont-ils pu bâtir des monuments aussi gigantesques ?</p>
-            </div>
-        </div>
-
-        <div class="card-monde" data-topic="revolutions">
-            <img src="https://images.unsplash.com/photo-1569930784237-ea65a2f48a63?auto=format&fit=crop&w=600&q=80" alt="Foule en mouvement ou révolte historique">
-            <div class="card-monde-content">
-                <h2>Les plus grandes révolutions</h2>
-                <p>Quand le peuple décide de tout changer, comment le monde bascule-t-il ?</p>
-            </div>
-        </div>
-
-        <div class="card-monde" data-topic="israel">
-            <img src="https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&w=600&q=80" alt="Jérusalem pierres anciennes">
-            <div class="card-monde-content">
-                <h2>La terre d’Israël</h2>
-                <p>Pourquoi ce petit morceau de terre est-il au carrefour de tant de cultures et d'histoires ?</p>
-            </div>
-        </div>
-
     </main>
 
-    <!-- --- LE PANNEAU LATÉRAL --- -->
+    <!-- DRAWER -->
     <div class="drawer" id="drawer">
-        <button class="close-btn" id="close-btn">Fermer ✖</button>
-        <h2 class="drawer-title" id="drawer-title">Thème du monde</h2>
-        <ul class="questions-list" id="questions-list">
-            <!-- Les questions s'insèrent ici dynamiquement -->
-        </ul>
+        <div class="drawer-header">
+            <h2 class="drawer-title" id="drawer-title">Thème</h2>
+            <button class="close-btn" id="close-btn">Fermer ✖</button>
+        </div>
+        
+        <div class="drawer-controls">
+            <input type="text" id="search" class="search-input" placeholder="Rechercher une question...">
+            <button id="sort-btn" class="sort-btn" data-order="desc">Date ↓</button>
+        </div>
+
+        <ul class="questions-list" id="questions-list"></ul>
     </div>
 
-    <!-- --- LOGIQUE JAVASCRIPT --- -->
     <script>
         const questionsData = {
-            vainqueurs: {
-                title: "Les vainqueurs qui ont fait l’histoire 👑",
+            'civilisations': {
+                title: "Les civilisations 🌍",
                 questions: [
-                    "📜 Si les perdants des guerres avaient écrit les livres d'histoire, que lirions-nous aujourd'hui ?",
-                    "⚔️ Peut-on devenir un grand personnage historique sans jamais avoir fait de conquêtes ?",
-                    "🗣️ Pourquoi oublie-t-on souvent le nom des milliers de personnes qui ont aidé les chefs à gagner ?",
-                    "🎭 Un héros pour un pays peut-il être considéré comme un méchant pour un autre pays ?",
-                    "🏛️ Est-ce que la force militaire est le seul moyen de laisser une trace durable dans le temps ?",
-                    "📖 Comment faire la différence entre une légende inventée et la vérité sur un roi antique ?",
-                    "🗺️ Les frontières de nos pays actuels ne sont-elles que le résultat de victoires passées ?",
-                    "⏳ Est-ce que le temps finit toujours par rendre justice à ceux qui ont été oubliés ?",
-                    "🎨 Pourquoi les statues historiques représentent-elles toujours les chefs de manière parfaite ?",
-                    "💭 Changer le passé en pensée modifierait-il notre façon de vivre aujourd'hui ?"
-                ]
-            },
-            bermude: {
-                title: "Le triangle de Bermude 🧭",
-                questions: [
-                    "🌊 Pourquoi les boussoles et les instruments électroniques s'affolent-ils dans cette zone ?",
-                    "🛸 Les disparitions de bateaux cacheraient-elles des secrets sous-marins ou extraterrestres ?",
-                    "⛈️ Les tempêtes et les vagues géantes suffisent-elles à expliquer tous les mystères ?",
-                    "🧲 Existe-t-il des anomalies magnétiques naturelles créées par le cœur de la Terre ?",
-                    "🗺️ Pourquoi cette zone précise fait-elle plus peur que d'autres endroits profonds de l'océan ?",
-                    "🫧 Est-ce que des bulles de gaz géantes remontant du fond de l'eau pourraient faire couler des navires ?",
-                    "🦈 Si on fouillait tout le fond du triangle, que trouverait-on d'inattendu ?",
-                    "🏴‍☠️ Les vieilles légendes de marins ont-elles amplifié la réalité de cet endroit ?",
-                    "✈️ Comment un avion peut-il s'évanouir des radars sans laisser la moindre trace ?",
-                    "🌀 L'océan garde-t-il des secrets que la science moderne n'est pas encore prête à comprendre ?"
-                ]
-            },
-            merveilles: {
-                title: "Les sept merveilles du monde 🏛️",
-                questions: [
-                    "📐 Sans grues ni ordinateurs, comment les anciens ont-ils atteint une telle précision mathématique ?",
-                    "🏜️ Pourquoi la Pyramide de Khéops est-elle la seule merveille antique encore debout aujourd'hui ?",
-                    "🌿 Les Jardins suspendus de Babylone ont-ils vraiment existé ou étaient-ils un rêve de poète ?",
-                    "🗿 Pourquoi les humains ressentent-ils le besoin de construire des monuments disproportionnés ?",
-                    "🌊 Quel message le Phare d'Alexandrie voulait-il envoyer aux voyageurs de la Méditerranée ?",
-                    "🔨 Combien d'années de travail et d'artisans oubliés a-t-il fallu pour sculpter ces chefs-d'œuvre ?",
-                    "🔥 Si une œuvre d'art géante est détruite par un séisme ou un incendie, disparaît-elle vraiment ?",
-                    "🗳️ Qui a décidé un jour qu'il y avait exactement 'sept' merveilles et pas plus ?",
-                    "✨ Qu'est-ce qui rend un monument 'merveilleux' : sa taille, sa beauté ou son histoire ?",
-                    "🚀 Quelles constructions de notre époque mériteraient de devenir les merveilles du futur ?"
-                ]
-            },
-            revolutions: {
-                title: "Les plus grandes révolutions 📢",
-                questions: [
-                    "🔥 Pourquoi les humains acceptent-ils des règles pendant des siècles avant de soudainement se révolter ?",
-                    "🚜 La plus grande révolution était-elle politique, ou était-ce l'invention de l'agriculture ?",
-                    "💡 Une idée écrite dans un livre peut-elle être plus puissante que les armes d'une armée ?",
-                    "🔄 Est-ce qu'une révolution remplace toujours un pouvoir par un autre pouvoir identique ?",
-                    "⚙️ Comment la machine à vapeur et l'industrie ont-elles changé notre rapport au temps ?",
-                    "📱 Internet et les smartphones constituent-ils la révolution la plus rapide de l'histoire ?",
-                    "🕊️ Peut-on faire basculer le monde et faire une révolution sans utiliser la violence ?",
-                    "🥖 Si le peuple n'avait pas manqué de pain en 1789, la France serait-elle toujours une monarchie ?",
-                    "⏳ Faut-il du temps pour savoir si une révolution a été bonne ou mauvaise pour la société ?",
-                    "🚀 Quelle sera la prochaine grande révolution qui changera nos vies de fond en comble ?"
-                ]
-            },
-            israel: {
-                title: "La terre d’Israël ⛰️",
-                questions: [
-                    "🌍 Comment un si petit territoire géographique peut-il concentrer autant d'histoire universelle ?",
-                    "🕌 Pourquoi la ville de Jérusalem est-elle considérée comme sacrée par trois grandes religions ?",
-                    "📜 Que nous apprennent les parchemins et les pierres archéologiques trouvés dans son désert ?",
-                    "👣 Comment les récits d'hommes ayant marché sur cette terre il y a des millénaires résonnent-ils encore ?",
-                    "🏜️ Comment les habitants ont-ils réussi à transformer des zones désertiques en espaces agricoles ?",
-                    "🌊 Quelle est la particularité mystique de la mer Morte, où l'on flotte sans aucun effort ?",
-                    "🕊️ Pourquoi est-il si complexe de trouver un équilibre de paix là où tant de cultures se croisent ?",
-                    "🏛️ Comment les langues anciennes comme l'hébreu ont-elles pu renaître dans le monde moderne ?",
-                    "Olive🫒 Que symbolise le rameau d'olivier qui pousse sur ces collines depuis l'Antiquité ?",
-                    "💬 Comment le passé antique et les technologies de pointe cohabitent-ils dans ce paysage ?"
+                    {
+                        text: "L'écriture a-t-elle été inventée pour libérer l'esprit humain ou pour mieux contrôler les peuples ?",
+                        pubDate: "2026-02-14",
+                        creDate: "2025-12-01",
+                        author: "Yuval Noah Harari",
+                        theme: "Histoire & Sociologie"
+                    },
+                    {
+                        text: "Si une civilisation ancienne avait atteint un niveau technologique supérieur, en resterait-il des traces aujourd'hui ?",
+                        pubDate: "2026-06-22",
+                        author: "Robert L.",
+                        theme: "Archéologie spéculative"
+                    }
                 ]
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.card-monde');
-            const drawer = document.getElementById('drawer');
-            const overlay = document.getElementById('overlay');
-            const closeBtn = document.getElementById('close-btn');
-            const drawerTitle = document.getElementById('drawer-title');
-            const questionsList = document.getElementById('questions-list');
+        let currentTopic = '';
+        let currentOrder = 'desc';
 
-            function openDrawer(topicKey) {
-                const data = questionsData[topicKey];
-                if (!data) return;
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.getElementById('close-btn');
+        const searchInput = document.getElementById('search');
+        const sortBtn = document.getElementById('sort-btn');
+        const questionsList = document.getElementById('questions-list');
+        const drawerTitle = document.getElementById('drawer-title');
 
-                drawerTitle.textContent = data.title;
-                questionsList.innerHTML = '';
+        function renderQuestions() {
+            if (!currentTopic || !questionsData[currentTopic]) return;
+            const data = questionsData[currentTopic];
+            
+            drawerTitle.textContent = data.title;
+            questionsList.innerHTML = '';
 
-                data.questions.forEach((q, index) => {
-                    const li = document.createElement('li');
-                    li.className = 'question-item';
-                    li.textContent = q;
-                    li.style.animationDelay = `${index * 0.05}s`;
-                    questionsList.appendChild(li);
-                });
+            const term = searchInput.value.toLowerCase().trim();
 
-                drawer.classList.add('open');
-                overlay.classList.add('visible');
-            }
-
-            function closeDrawer() {
-                drawer.classList.remove('open');
-                overlay.classList.remove('visible');
-            }
-
-            cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const topic = card.getAttribute('data-topic');
-                    openDrawer(topic);
-                });
+            let filtered = data.questions.filter(q => {
+                const textMatch = q.text.toLowerCase().includes(term);
+                const authorMatch = q.author ? q.author.toLowerCase().includes(term) : false;
+                const themeMatch = q.theme ? q.theme.toLowerCase().includes(term) : false;
+                return textMatch || authorMatch || themeMatch;
             });
 
-            closeBtn.addEventListener('click', closeDrawer);
-            overlay.addEventListener('click', closeDrawer);
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeDrawer();
+            filtered.sort((a, b) => {
+                const dateA = new Date(a.pubDate);
+                const dateB = new Date(b.pubDate);
+                return currentOrder === 'asc' ? dateA - dateB : dateB - dateA;
             });
+
+            filtered.forEach((q, index) => {
+                const li = document.createElement('li');
+                li.className = 'question-item';
+                li.style.animationDelay = `${index * 0.04}s`;
+
+                let metaHTML = `<span class="meta-tag date">📅 Publié : ${q.pubDate}</span>`;
+                if (q.creDate) metaHTML += `<span class="meta-tag">✍️ Créé : ${q.creDate}</span>`;
+                if (q.author) metaHTML += `<span class="meta-tag">👤 Source : ${q.author}</span>`;
+                if (q.theme) metaHTML += `<span class="meta-tag">🏷️ Thème : ${q.theme}</span>`;
+
+                li.innerHTML = `
+                    <div class="question-text">${q.text}</div>
+                    <div class="question-meta">${metaHTML}</div>
+                `;
+                questionsList.appendChild(li);
+            });
+        }
+
+        function openDrawer(topicKey) {
+            currentTopic = topicKey;
+            searchInput.value = '';
+            drawer.classList.add('open');
+            overlay.classList.add('visible');
+            renderQuestions();
+        }
+
+        function closeDrawer() {
+            drawer.classList.remove('open');
+            overlay.classList.remove('visible');
+        }
+
+        document.querySelectorAll('.card-monde').forEach(card => {
+            card.addEventListener('click', () => openDrawer(card.getAttribute('data-topic')));
         });
+
+        closeBtn.addEventListener('click', closeDrawer);
+        overlay.addEventListener('click', closeDrawer);
+        searchInput.addEventListener('input', renderQuestions);
+
+        sortBtn.addEventListener('click', () => {
+            currentOrder = currentOrder === 'desc' ? 'asc' : 'desc';
+            sortBtn.textContent = currentOrder === 'desc' ? 'Date ↓' : 'Date ↑';
+            renderQuestions();
+        });
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
     </script>
 </body>
 </html>

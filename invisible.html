@@ -8,39 +8,25 @@
         @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Lexend:wght@300..900&display=swap');
 
         :root {
-            --bg-invisible: #0f172a; /* Fond sombre */
+            --bg-invisible: #0b132b;
             --text-light: #f1f5f9;
             --accent-purple: #a29bfe;
-            --drawer-bg: #1e293b;
+            --drawer-bg: #1c2541;
             --card-hover-bg: rgba(255, 255, 255, 0.08);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
             font-family: 'Lexend', sans-serif;
             background-color: var(--bg-invisible);
             color: var(--text-light);
             padding: 20px;
             min-height: 100vh;
-            overflow-x: hidden; /* Évite le scroll horizontal à cause du drawer caché */
+            overflow-x: hidden;
         }
 
-        header {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        h1 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 3.5rem;
-            color: var(--accent-purple);
-            margin-bottom: 20px;
-        }
+        header { text-align: center; padding: 40px 20px; }
+        h1 { font-family: 'Fredoka', sans-serif; font-size: 3.5rem; color: var(--accent-purple); margin-bottom: 20px; }
 
         .back-btn {
             display: inline-block;
@@ -53,15 +39,11 @@
             border-radius: 50px;
             transition: all 0.3s;
         }
-
-        .back-btn:hover {
-            background: var(--accent-purple);
-            color: white;
-        }
+        .back-btn:hover { background: var(--accent-purple); color: var(--bg-invisible); }
 
         .grid-invisible {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 30px;
             max-width: 1200px;
             margin: 0 auto;
@@ -75,353 +57,301 @@
             transition: transform 0.3s, background-color 0.3s;
             cursor: pointer;
         }
-
-        .card-inv:hover {
-            transform: scale(1.03);
-            background: var(--card-hover-bg);
-        }
-
-        .card-inv img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            filter: grayscale(30%) brightness(80%);
-            transition: 0.5s;
-        }
-
-        .card-inv:hover img {
-            filter: grayscale(0%) brightness(100%);
-        }
-
-        .card-inv-content {
-            padding: 25px;
-            text-align: center;
-        }
-
-        .card-inv-content h2 {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.8rem;
-            margin-bottom: 10px;
-        }
-
-        .card-inv-content p {
-            font-size: 1rem;
-            color: #cbd5e1;
-            line-height: 1.5;
-        }
+        .card-inv:hover { transform: translateY(-5px); background: var(--card-hover-bg); }
+        .card-inv img { width: 100%; height: 220px; object-fit: cover; filter: brightness(80%); transition: 0.5s; }
+        .card-inv:hover img { filter: brightness(100%) scale(1.03); }
+        .card-inv-content { padding: 25px; text-align: center; }
+        .card-inv-content h2 { font-family: 'Fredoka', sans-serif; font-size: 1.8rem; margin-bottom: 10px; }
+        .card-inv-content p { font-size: 1rem; color: #cbd5e1; line-height: 1.5; }
 
         /* --- PANNEAU COULISSANT (DRAWER) --- */
         .drawer {
             position: fixed;
             top: 0;
-            right: -450px; /* Caché par défaut à droite */
-            width: 450px;
+            right: -500px;
+            width: 500px;
             max-width: 100%;
             height: 100vh;
             background-color: var(--drawer-bg);
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
             transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 1000;
-            padding: 40px 30px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
         }
+        .drawer.open { right: 0; }
 
-        .drawer.open {
-            right: 0; /* Devient visible */
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
         }
-
         .close-btn {
-            align-self: flex-end;
             background: none;
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: var(--text-light);
-            font-size: 1.5rem;
+            font-size: 1rem;
             cursor: pointer;
             padding: 5px 15px;
             border-radius: 50px;
             font-family: 'Fredoka', sans-serif;
             transition: all 0.3s;
         }
-
-        .close-btn:hover {
-            background: var(--accent-purple);
-            border-color: var(--accent-purple);
-        }
+        .close-btn:hover { background: var(--accent-purple); color: var(--bg-invisible); border-color: var(--accent-purple); }
 
         .drawer-title {
             font-family: 'Fredoka', sans-serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--accent-purple);
-            margin: 20px 0 30px 0;
             border-bottom: 2px solid rgba(255, 255, 255, 0.1);
             padding-bottom: 10px;
+            margin-bottom: 15px;
         }
 
+        /* --- RECHERCHE ET TRI --- */
+        .drawer-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .search-input {
+            flex-grow: 1;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 15px;
+            border-radius: 12px;
+            color: #fff;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.95rem;
+        }
+        .search-input:focus { outline: none; border-color: var(--accent-purple); }
+        .sort-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Lexend', sans-serif;
+            font-size: 0.9rem;
+            transition: 0.3s;
+        }
+        .sort-btn:hover { background: var(--accent-purple); color: var(--bg-invisible); }
+
+        /* --- LISTE DES QUESTIONS --- */
         .questions-list {
             list-style: none;
-            overflow-y: auto; /* Scroll si trop de questions */
+            overflow-y: auto;
             flex-grow: 1;
-            padding-right: 10px;
+            padding-right: 5px;
         }
-
         .question-item {
-            font-size: 1.1rem;
-            line-height: 1.5;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
             animation: slideInQuestion 0.4s ease forwards;
             opacity: 0;
             transform: translateX(20px);
         }
+        @keyframes slideInQuestion { to { opacity: 1; transform: translateX(0); } }
 
-        /* Effet d'apparition en cascade pour les lignes de questions */
-        @keyframes slideInQuestion {
-            to { opacity: 1; transform: translateX(0); }
+        .question-text {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            margin-bottom: 8px;
         }
+        .question-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: #94a3b8;
+        }
+        .meta-tag {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 3px 8px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .meta-tag.date { border-color: rgba(162, 155, 254, 0.3); color: var(--accent-purple); }
 
-        /* Superposition sombre en arrière-plan quand le panneau est ouvert */
         .overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.5);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s;
-            z-index: 999;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.4s; z-index: 999;
         }
-
-        .overlay.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .overlay.visible { opacity: 1; pointer-events: auto; }
     </style>
 </head>
 <body>
 
     <div class="overlay" id="overlay"></div>
-
     <a href="index.html" class="back-btn">⬅ Retour au Labo</a>
 
     <header>
         <h1>L'Invisible ✨</h1>
-        <p>Ce que nos yeux ne voient pas, mais que notre esprit peut imaginer... Clique sur une catégorie pour l'explorer !</p>
+        <p>Explore les dimensions cachées qui nous entourent sans que nos yeux puissent les capter.</p>
     </header>
 
     <main class="grid-invisible">
-        
-        <div class="card-inv" data-topic="grand">
-            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=600&q=80" alt="Galaxies">
+        <div class="card-inv" data-topic="infiniment-petit">
+            <img src="https://images.unsplash.com/photo-1532187863486-abf9d39d66e8?auto=format&fit=crop&w=600&q=80" alt="Microscope">
             <div class="card-inv-content">
-                <h2>L'infiniment Grand</h2>
-                <p>Où s'arrête le ciel ? Explore les secrets des galaxies géantes et de l'espace sans fin.</p>
+                <h2>L'Infiniment Petit</h2>
+                <p>Voyage au cœur des atomes, des cellules et des particules élémentaires.</p>
             </div>
         </div>
 
-        <div class="card-inv" data-topic="petit">
-            <img src="https://images.unsplash.com/photo-1532187875605-183821245234?auto=format&fit=crop&w=600&q=80" alt="Atomes">
+        <div class="card-inv" data-topic="ondes">
+            <img src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=600&q=80" alt="Ondes">
             <div class="card-inv-content">
-                <h2>L'infiniment Petit</h2>
-                <p>Voyage au cœur de l'atome. Comment des choses si petites construisent-elles tout notre monde ?</p>
+                <h2>Les Ondes & Énergie</h2>
+                <p>Les courants invisibles qui transportent les données et animent la matière.</p>
             </div>
         </div>
-
-        <div class="card-inv" data-topic="dieu">
-            <img src="https://images.unsplash.com/photo-1499209974431-9dac32a3a60d?auto=format&fit=crop&w=600&q=80" alt="Lumière">
-            <div class="card-inv-content">
-                <h2>Dieu</h2>
-                <p>Une présence, une énergie ou une histoire ? Questionne-toi sur ce nom millénaire.</p>
-            </div>
-        </div>
-
-        <div class="card-inv" data-topic="foi">
-            <img src="https://images.unsplash.com/photo-1515023115689-589c33041d3c?auto=format&fit=crop&w=600&q=80" alt="Méditation">
-            <div class="card-inv-content">
-                <h2>La Foi</h2>
-                <p>Croire sans voir, est-ce un super-pouvoir ? Découvre la force qui vient de l'intérieur.</p>
-            </div>
-        </div>
-
-        <div class="card-inv" data-topic="mystere">
-            <img src="https://images.unsplash.com/photo-1516331138075-f3ad16d69762?auto=format&fit=crop&w=600&q=80" alt="Vent">
-            <div class="card-inv-content">
-                <h2>Le Mystère de l'Invisibilité</h2>
-                <p>Le vent, la musique, l'amour... Pourquoi le plus important ne se voit-il pas ?</p>
-            </div>
-        </div>
-
-        <div class="card-inv" data-topic="neant">
-            <img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&w=600&q=80" alt="Trou Noir">
-            <div class="card-inv-content">
-                <h2>Le Néant</h2>
-                <p>Le "Rien" existe-t-il vraiment ? Plonge dans la question la plus vertigineuse de l'esprit.</p>
-            </div>
-        </div>
-
     </main>
 
+    <!-- DRAWER -->
     <div class="drawer" id="drawer">
-        <button class="close-btn" id="close-btn">Fermer ✖</button>
-        <h2 class="drawer-title" id="drawer-title">Titre de la catégorie</h2>
-        <ul class="questions-list" id="questions-list">
-            </ul>
+        <div class="drawer-header">
+            <h2 class="drawer-title" id="drawer-title">Thème</h2>
+            <button class="close-btn" id="close-btn">Fermer ✖</button>
+        </div>
+        
+        <div class="drawer-controls">
+            <input type="text" id="search" class="search-input" placeholder="Rechercher une question...">
+            <button id="sort-btn" class="sort-btn" data-order="desc">Date ↓</button>
+        </div>
+
+        <ul class="questions-list" id="questions-list"></ul>
     </div>
 
     <script>
-        // Banque de données contenant une dizaine de questions par sous-catégorie
         const questionsData = {
-            grand: {
-                title: "L'infiniment Grand 🌌",
+            'infiniment-petit': {
+                title: "L'Infiniment Petit 🔬",
                 questions: [
-                    "🚀 Si l'Univers s'agrandit, dans quoi s'agrandit-il ?",
-                    "⭐ Y a-t-il une fin à l'espace, ou peut-on avancer tout droit pour toujours ?",
-                    "👽 Si le ciel est infini, est-il obligatoire qu'une autre Terre existe quelque part ?",
-                    "⏳ Est-ce que le temps passe à la même vitesse au milieu des étoiles ?",
-                    "👁️ Qui regarde l'Univers pour savoir qu'il est grand ?",
-                    "🌍 Si la Terre est un grain de sable dans le cosmos, sommes-nous petits ou précieux ?",
-                    "🛰️ Peut-on fabriquer une boîte assez grande pour y enfermer le vide spatial ?",
-                    "💫 Les étoiles meurent-elles de vieillesse comme les êtres vivants ?",
-                    "🌀 Qu'y avait-il une seconde avant la naissance de tout l'Univers ?",
-                    "💭 L'Univers sait-il que nous sommes là en train de l'observer ?"
+                    {
+                        text: "Si tout est fait de vide à l'échelle atomique, pourquoi la matière nous paraît-elle si solide ?",
+                        pubDate: "2026-03-12",
+                        creDate: "2026-01-10",
+                        author: "Richard Feynman",
+                        theme: "Physique quantique"
+                    },
+                    {
+                        text: "Une particule élémentaire peut-elle posséder sa propre conscience d'exister ?",
+                        pubDate: "2026-05-18",
+                        author: "Erwin Schrödinger",
+                        theme: "Métaphysique"
+                    }
                 ]
             },
-            petit: {
-                title: "L'infiniment Petit 🔬",
+            'ondes': {
+                title: "Les Ondes & Énergie ⚡",
                 questions: [
-                    "🧬 Si on coupe un morceau de papier à l'infini, arrivera-t-il un moment où il disparaîtra ?",
-                    "⚛️ De quoi sont faits les atomes ? Sont-ils eux-mêmes remplis d'un autre monde ?",
-                    "🐜 Est-ce qu'une fourmi a conscience que la Terre est immense ?",
-                    "🧪 Les briques invisibles qui nous composent sont-elles vivantes ?",
-                    "🦠 Comment des cellules invisibles à l'œil nu savent-elles comment fabriquer mes yeux ?",
-                    "❄️ Pourquoi deux flocons de neige microscopiques ne sont jamais identiques ?",
-                    "🔍 Si on ne peut pas voir une chose, est-on sûr qu'elle a une forme ?",
-                    "✨ Est-ce qu'un secret minuscule peut changer le monde entier ?",
-                    "🫧 Y a-t-il plus d'atomes dans un verre d'eau que de grains de sable sur Terre ?",
-                    "🧠 Mes idées naissent-elles de petites étincelles électriques cachées dans mes cellules ?"
-                ]
-            },
-            dieu: {
-                title: "Dieu ✨",
-                questions: [
-                    "🎨 Si Dieu a tout créé, qui a créé Dieu ?",
-                    "💨 Peut-on croire en quelque chose qu'on ne peut ni toucher, ni dessiner ?",
-                    "☀️ Pourquoi les humains ont-ils imaginé des milliers de dieux différents ?",
-                    "🗣️ Si on parle à l'Univers ou à Dieu dans sa tête, est-ce que quelqu'on écoute ?",
-                    "🌈 Dieu est-il une personne, une force de la nature ou juste une grande idée ?",
-                    "⚖️ Si Dieu est parfait, pourquoi existe-t-il des choses imparfaites ou tristes ?",
-                    "🎭 Est-ce que les histoires sur les dieux servent à nous rassurer ou à nous faire réfléchir ?",
-                    "🏡 Où habite ce qui est sacré si ce n'est pas dans un endroit précis ?",
-                    "🕊️ Peut-on se mettre d'accord sur Dieu sans se disputer ?",
-                    "❤️ Est-ce que l'amour est la preuve qu'il y a quelque chose de divin en nous ?"
-                ]
-            },
-            foi: {
-                title: "La Foi 🙏",
-                questions: [
-                    "🔑 Quelle est la différence entre 'savoir' une chose et 'croire' en une chose ?",
-                    "🛡️ D'où vient le courage de ceux qui ont une confiance absolue en l'avenir ?",
-                    "🌟 Peut-on avoir la foi en soi-même comme on a la foi en un idéal ?",
-                    "🪁 Est-ce que douter, c'est le début de la sagesse ou la fin de la croyance ?",
-                    "🕯️ Pourquoi une simple croyance peut-elle rendre quelqu'un plus fort que la peur ?",
-                    "🔮 Est-ce que nos espoirs peuvent modifier la réalité ?",
-                    "🔗 Qu'est-ce qui relie les personnes qui partagent la même foi ?",
-                    "🌾 Si on sème une idée sans être sûr qu'elle poussera, est-ce un acte de foi ?",
-                    "💭 Est-ce que croire au Père Noël quand on est petit est la même chose que d'avoir la foi ?",
-                    "🎵 Peut-on ressentir de la foi rien qu'en écoutant une musique magnifique ?"
-                ]
-            },
-            mystere: {
-                title: "Le Mystère de l'Invisibilité 🌬️",
-                questions: [
-                    "💨 Le vent n'a pas de couleur, alors comment sait-on qu'il est là ?",
-                    "❤️ Si l'amour ne se voit pas au microscope, comment fait-il pour bouger nos vies ?",
-                    "📻 Comment la musique voyage-t-elle dans l'air pour venir faire danser mon cœur ?",
-                    "📱 Les ondes du Wifi sont partout autour de nous, forment-elles un paysage secret ?",
-                    "🕵️‍♂️ Si tu devenais invisible pendant une journée, resterais-tu la même personne ?",
-                    "☀️ Pourquoi la lumière nous montre-t-elle le monde mais reste invisible elle-même ?",
-                    "🕰️ Où se cache hier ? L'époque passée existe-t-elle encore quelque part ?",
-                    "🦜 Les animaux voient-ils des couleurs et des choses qui nous sont totalement invisibles ?",
-                    "💧 Pourquoi l'eau transparente devient-elle visible quand elle se transforme en glace ?",
-                    "📖 Les secrets ont-ils besoin de rester invisibles pour garder leur magie ?"
-                ]
-            },
-            neant: {
-                title: "Le Néant 🕳️",
-                questions: [
-                    "⚫ Si on enlève absolument tout (l'espace, le temps, les objets), que reste-t-il ?",
-                    "🖍️ Peut-on dessiner le 'Rien' ou est-ce seulement une page blanche ?",
-                    "🚪 Est-ce que le néant existait avant que le premier élément de l'Univers n'apparaisse ?",
-                    "🧼 Quand on efface un souvenir, retourne-t-il dans le néant ?",
-                    "❓ Pourquoi y a-t-il quelque chose plutôt que rien ?",
-                    "🧲 Le trou noir est-il une porte vers le néant ou juste un aspirateur géant ?",
-                    "💤 Où étions-nous avant de naître ? Était-ce le néant, et est-ce que c'était confortable ?",
-                    "💥 Si une idée disparaît de la Terre sans que personne ne l'ait écrite, va-t-elle dans le néant ?",
-                    "🧩 Le vide dans une bouteille est-il du néant ou juste de l'air transparent ?",
-                    "🎭 Si le néant n'est rien, pourquoi son concept nous donne-t-il le vertige ?"
+                    {
+                        text: "Notre cerveau capte-t-il des fréquences invisibles dont nous n'avons pas conscience ?",
+                        pubDate: "2026-02-20",
+                        creDate: "2026-02-01",
+                        author: "Nikola Tesla",
+                        theme: "Électromagnétisme"
+                    },
+                    {
+                        text: "Les ondes wifi et radio modifient-elles subtilement notre connexion à la nature ?",
+                        pubDate: "2026-06-01",
+                        author: "Dr. Aris",
+                        theme: "Écologie vibratoire"
+                    }
                 ]
             }
         };
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.card-inv');
-            const drawer = document.getElementById('drawer');
-            const overlay = document.getElementById('overlay');
-            const closeBtn = document.getElementById('close-btn');
-            const drawerTitle = document.getElementById('drawer-title');
-            const questionsList = document.getElementById('questions-list');
+        // --- Logique Générique Commune à toutes les pages ---
+        let currentTopic = '';
+        let currentOrder = 'desc'; // 'asc' ou 'desc'
 
-            // Fonction pour ouvrir le volet
-            function openDrawer(topicKey) {
-                const data = questionsData[topicKey];
-                if (!data) return;
+        const drawer = document.getElementById('drawer');
+        const overlay = document.getElementById('overlay');
+        const closeBtn = document.getElementById('close-btn');
+        const searchInput = document.getElementById('search');
+        const sortBtn = document.getElementById('sort-btn');
+        const questionsList = document.getElementById('questions-list');
+        const drawerTitle = document.getElementById('drawer-title');
 
-                // Mettre à jour le titre
-                drawerTitle.textContent = data.title;
+        function renderQuestions() {
+            if (!currentTopic || !questionsData[currentTopic]) return;
+            const data = questionsData[currentTopic];
+            
+            drawerTitle.textContent = data.title;
+            questionsList.innerHTML = '';
 
-                // Vider l'ancienne liste
-                questionsList.innerHTML = '';
+            const term = searchInput.value.toLowerCase().trim();
 
-                // Insérer les nouvelles questions une par une avec un léger décalage d'animation
-                data.questions.forEach((q, index) => {
-                    const li = document.createElement('li');
-                    li.className = 'question-item';
-                    li.textContent = q;
-                    // Décalage pour l'effet cascade (0.05s par ligne)
-                    li.style.animationDelay = `${index * 0.05}s`;
-                    questionsList.appendChild(li);
-                });
-
-                // Afficher le drawer et l'overlay
-                drawer.classList.add('open');
-                overlay.classList.add('visible');
-            }
-
-            // Fonction pour fermer le volet
-            function closeDrawer() {
-                drawer.classList.remove('open');
-                overlay.classList.remove('visible');
-            }
-
-            // Événements sur les cartes
-            cards.forEach(card => {
-                card.addEventListener('click', () => {
-                    const topic = card.getAttribute('data-topic');
-                    openDrawer(topic);
-                });
+            // Filtrer
+            let filtered = data.questions.filter(q => {
+                const textMatch = q.text.toLowerCase().includes(term);
+                const authorMatch = q.author ? q.author.toLowerCase().includes(term) : false;
+                const themeMatch = q.theme ? q.theme.toLowerCase().includes(term) : false;
+                return textMatch || authorMatch || themeMatch;
             });
 
-            // Événements de fermeture
-            closeBtn.addEventListener('click', closeDrawer);
-            overlay.addEventListener('click', closeDrawer);
-
-            // Fermeture avec la touche Échap
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeDrawer();
+            // Trier par date de publication
+            filtered.sort((a, b) => {
+                const dateA = new Date(a.pubDate);
+                const dateB = new Date(b.pubDate);
+                return currentOrder === 'asc' ? dateA - dateB : dateB - dateA;
             });
+
+            // Afficher
+            filtered.forEach((q, index) => {
+                const li = document.createElement('li');
+                li.className = 'question-item';
+                li.style.animationDelay = `${index * 0.04}s`;
+
+                let metaHTML = `<span class="meta-tag date">📅 Publié : ${q.pubDate}</span>`;
+                if (q.creDate) metaHTML += `<span class="meta-tag">✍️ Créé : ${q.creDate}</span>`;
+                if (q.author) metaHTML += `<span class="meta-tag">👤 Source : ${q.author}</span>`;
+                if (q.theme) metaHTML += `<span class="meta-tag">🏷️ Thème : ${q.theme}</span>`;
+
+                li.innerHTML = `
+                    <div class="question-text">${q.text}</div>
+                    <div class="question-meta">${metaHTML}</div>
+                `;
+                questionsList.appendChild(li);
+            });
+        }
+
+        function openDrawer(topicKey) {
+            currentTopic = topicKey;
+            searchInput.value = '';
+            drawer.classList.add('open');
+            overlay.classList.add('visible');
+            renderQuestions();
+        }
+
+        function closeDrawer() {
+            drawer.classList.remove('open');
+            overlay.classList.remove('visible');
+        }
+
+        document.querySelectorAll('.card-inv').forEach(card => {
+            card.addEventListener('click', () => openDrawer(card.getAttribute('data-topic')));
         });
+
+        closeBtn.addEventListener('click', closeDrawer);
+        overlay.addEventListener('click', closeDrawer);
+        searchInput.addEventListener('input', renderQuestions);
+
+        sortBtn.addEventListener('click', () => {
+            currentOrder = currentOrder === 'desc' ? 'asc' : 'desc';
+            sortBtn.textContent = currentOrder === 'desc' ? 'Date ↓' : 'Date ↑';
+            renderQuestions();
+        });
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
     </script>
 </body>
 </html>
