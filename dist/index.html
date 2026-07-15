@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Labo des Curieux - Accueil</title>
+  <script type="module" crossorigin src="/Kodem-questions/assets/index-Baom-X9X.js"></script>
+  <link rel="stylesheet" crossorigin href="/Kodem-questions/assets/index-B4xub12A.css">
+</head>
+<body>
+
+    <header>
+        <h1>Le Labo des <span>Curieux</span> 🧪</h1>
+        <p>Bienvenue dans cet espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers, de la pensée humaine, des croyances et du temps.</p>
+        
+        <div class="search-container">
+            <input 
+                type="text" 
+                id="search-input" 
+                class="search-input" 
+                placeholder="🔍 Rechercher une question, une sous-catégorie..."
+                autocomplete="off"
+            >
+        </div>
+    </header>
+
+    <main class="grid-categories" id="categories-container">
+        <p class="loading-text">Chargement des catégories de pensée...</p>
+    </main>
+
+    <div id="drawer-overlay" class="drawer-overlay"></div>
+    <div id="search-drawer" class="drawer">
+        <div class="drawer-header">
+            <h3>Résultats (<span id="results-count">0</span>)</h3>
+            <button id="close-drawer" class="drawer-close-btn">&times;</button>
+        </div>
+        <div id="drawer-content" class="drawer-results">
+            </div>
+    </div>
+
+    <footer>
+        <p>© 2026 Le Labo des Curieux — Développé sur la branche developer-v2</p>
+    </footer>
+
+</body>
+</html>

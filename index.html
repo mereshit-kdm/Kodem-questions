@@ -1,107 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Le Labo des Curieux - Accueil</title>
-    <link rel="stylesheet" href="/css/main.css">
+    <title>Le Labo des Curieux</title>
+    <link rel="stylesheet" href="./css/main.css">
 </head>
+
 <body>
 
-    <header>
-        <h1>Le Labo des <span>Curieux</span> 🧪</h1>
-        <p>Bienvenue dans cet espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l'univers, de la pensée humaine, des croyances et du temps.</p>
-        
-        <div class="search-container">
-            <input 
-                type="text" 
-                id="search-input" 
-                class="search-input" 
-                placeholder="🔍 Rechercher une question, une sous-catégorie..."
-                autocomplete="off"
-            >
-        </div>
-    </header>
-
-    <main class="grid-categories" id="categories-container">
-        <p class="loading-text">Chargement des catégories de pensée...</p>
-    </main>
+    <div id="app-container"></div>
 
     <div id="drawer-overlay" class="drawer-overlay"></div>
     <div id="search-drawer" class="drawer">
         <div class="drawer-header">
-            <h3>Résultats (<span id="results-count">0</span>)</h3>
+            <h3 id="drawer-title">Résultats</h3>
             <button id="close-drawer" class="drawer-close-btn">&times;</button>
         </div>
-        <div id="drawer-content" class="drawer-results">
-            </div>
+        <div class="search-container" style="padding: 10px;">
+            <input type="text" id="drawer-search-input" class="search-input" placeholder="🔍 Rechercher...">
+        </div>
+        <div id="drawer-content" class="drawer-results"></div>
     </div>
-
-    <footer>
-        <p>© 2026 Le Labo des Curieux — Développé sur la branche developer-v2</p>
-    </footer>
 
     <script type="module">
         import { supabase } from './js/supabase-client.js';
         import { fetchAllCategories } from './js/app.js';
 
-        // Association d'images par défaut corrigée avec des orthographes exactes
-        const categoryImages = {
-            'Se questionner sur soi-même': 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=600&q=80',
-            'Se questionner sur le monde': 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=600&q=80',
-            'Se questionner sur l’avenir': 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=600&q=80',
-            'Se questionner sur l’autre': 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=600&q=80',
-            'Se questionner sur l’au-delà': 'https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&w=600&q=80',
-            'Se questionner sur l’invisible': 'https://images.unsplash.com/photo-1516331138075-f3ad16d69762?auto=format&fit=crop&w=600&q=80',
-            'Se questionner sur les croyances': 'https://images.unsplash.com/photo-1548625361-155deee223cb?auto=format&fit=crop&w=600&q=80'
-        };
-
-        // DOM Elements
-        const categoriesContainer = document.getElementById('categories-container');
-        const searchInput = document.getElementById('search-input');
+        const appContainer = document.getElementById('app-container');
         const drawer = document.getElementById('search-drawer');
         const overlay = document.getElementById('drawer-overlay');
-        const closeBtn = document.getElementById('close-drawer');
         const drawerContent = document.getElementById('drawer-content');
-        const resultsCount = document.getElementById('results-count');
+        const drawerTitle = document.getElementById('drawer-title');
+        const drawerSearchInput = document.getElementById('drawer-search-input');
 
-        // Initialisation de la page d'accueil
-        document.addEventListener('DOMContentLoaded', async () => {
-            const categories = await fetchAllCategories();
-            renderCategories(categories);
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryId = urlParams.get('id');
+            categoryId ? renderCategoryPage(categoryId) : renderHomePage();
+            initDrawerSearch();
         });
 
-        // Fonction d'affichage des catégories dynamiques
-        function renderCategories(categoriesList) {
-            if (categoriesList.length === 0) {
-                categoriesContainer.innerHTML = '<p class="loading-text">Aucune catégorie trouvée en base de données.</p>';
-                return;
-            }
+        async function renderHomePage() {
+            const categories = await fetchAllCategories();
+            
+            const categoryData = {
+                "Se questionner sur soi-même": { color: "#00ffaa", desc: "Plongez à l’intérieur de votre être : l’identité, les mystères de votre conscience et le secret de votre âme." },
+                "Se questionner sur le monde": { color: "#ff9933", desc: "Explorez l’histoire terrestre : les révolutions majeures, les secrets des civilisations et les énigmes géographiques." },
+                "Se questionner sur l’avenir": { color: "#33ccff", desc: "Interrogez demain et l’inconnu : le rôle du hasard, le mystère des prophéties et la force du destin." },
+                "Se questionner sur l’autre": { color: "#ff3366", desc: "Explorez les mystères de l’empathie, la complexité du vivre-ensemble et les secrets des liens humains." },
+                "Se questionner sur l’au-delà": { color: "#b894ff", desc: "Voyagez aux limites de notre réalité : au-delà de la mort, du temps, de l’espace et de l’univers." },
+                "Se questionner sur l’invisible": { color: "#94a6ff", desc: "Explorez ce que nos yeux ne perçoivent pas : de l’infiniment petit aux forces sacrées ou secrètes." },
+                "Se questionner sur les croyances": { color: "#ffb347", desc: "Explorez l’histoire de la foi et des convictions humaines : le monothéisme, l’athéisme et les mythologies." }
+            };
 
-            categoriesContainer.innerHTML = categoriesList.map(cat => {
-                const imgUrl = cat.image_url || categoryImages[cat.title] || 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80';
-                
-                // CORRECTION : Redirige dynamiquement vers notre page unique categorie.html avec l'ID de la catégorie en paramètre d'URL
-                const dynamicLink = `categorie.html?id=${cat.id}`;
+            appContainer.innerHTML = `
+                <header style="text-align: center; padding: 20px;">
+                    <h1>Le Labo des <span>Curieux</span> 🧪</h1>
+                    <p>Bienvenue dans cet espace d'exploration philosophique. Choisis une grande catégorie pour ouvrir les portes des mystères de l’univers, de la pensée humaine, des croyances et du temps.</p>
+                    <div class="search-container" style="margin: 20px auto; max-width: 500px;">
+                        <input type="text" id="home-search-input" class="search-input" placeholder="🔍 Rechercher une question, une sous-catégorie...">
+                    </div>
+                </header>
+                <main class="grid-categories" id="categories-container"></main>
+            `;
 
+            document.getElementById('categories-container').innerHTML = categories.map(cat => {
+                const data = categoryData[cat.title] || { color: "#ffffff", desc: cat.description || "" };
                 return `
-                    <a href="${dynamicLink}" class="category-card ${cat.class_theme || 'default-theme'}">
-                        <div class="card-image-wrapper">
-                            <img src="${imgUrl}" alt="${cat.title}">
-                        </div>
+                    <a href="?id=${cat.id}" class="category-card" style="border: 2px solid ${data.color}">
+                        <div class="card-image-wrapper"><img src="${cat.image_url}" alt="${cat.title}"></div>
                         <div class="card-body">
-                            <h2>${cat.title}</h2>
-                            <p>${cat.description || ''}</p>
+                            <h2 style="color: ${data.color}">${cat.title}</h2>
+                            <p style="color: #ccc;">${data.desc}</p>
                         </div>
                     </a>
                 `;
             }).join('');
+
+            let searchTimeout;
+            document.getElementById('home-search-input').addEventListener('input', (e) => {
+                clearTimeout(searchTimeout);
+                const term = e.target.value;
+                if (term.length < 2) return;
+                searchTimeout = setTimeout(() => {
+                    drawerTitle.textContent = "Résultats de recherche";
+                    drawer.classList.add('open');
+                    overlay.classList.add('active');
+                    drawerSearchInput.value = term;
+                    drawerSearchInput.dispatchEvent(new Event('input'));
+                }, 800);
+            });
         }
 
-        // --- Fonctions d'ouverture / fermeture du Drawer ---
-        function openDrawer() {
+        function initDrawerSearch() {
+            drawerSearchInput.addEventListener('input', async (e) => {
+                const term = e.target.value;
+                if (term.length < 2) {
+                    drawerContent.innerHTML = "";
+                    return;
+                }
+                const words = term.trim().split(' ');
+                let query = supabase.from('questions').select('*');
+                words.forEach(word => { query = query.ilike('title', `%${word}%`); });
+                const { data } = await query;
+                drawerContent.innerHTML = (data || []).map(q => `<h4 class="question-item">${q.title}</h4>`).join('');
+            });
+        }
+
+        async function renderCategoryPage(id) {
+            appContainer.innerHTML = `
+                <nav style="padding: 20px;"><a href="./" class="q-badge badge-cat">← Retour</a></nav>
+                <header style="text-align:center;">
+                    <h1 id="main-title">Chargement...</h1>
+                    <p id="main-description"></p>
+                </header>
+                <main class="grid-categories" id="subcategories-grid"></main>
+            `;
+            
+            const { data: category } = await supabase.from('categories').select('*').eq('id', id).single();
+            const { data: subcategories } = await supabase.from('subcategories').select('*').eq('category_id', id);
+
+            document.getElementById('main-title').textContent = category.title;
+            document.getElementById('main-description').textContent = category.description || "";
+
+            const grid = document.getElementById('subcategories-grid');
+            grid.innerHTML = subcategories.map(sub => `
+                <div class="category-card" data-sub-id="${sub.id}" style="cursor: pointer;">
+                    <div class="card-image-wrapper"><img src="${sub.image_url}"></div>
+                    <div class="card-body">
+                        <h2>${sub.name}</h2>
+                        <p>${sub.description || 'Explorer ce thème...'}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', () => openDrawer(card.getAttribute('data-sub-id')));
+            });
+        }
+
+        async function openDrawer(subId) {
             drawer.classList.add('open');
             overlay.classList.add('active');
+            const { data } = await supabase.from('questions').select('*').eq('subcategory_id', subId);
+            drawerContent.innerHTML = (data || []).map(q => `<h4 class="question-item">${q.title}</h4>`).join('');
         }
 
         function closeDrawer() {
@@ -109,88 +153,8 @@
             overlay.classList.remove('active');
         }
 
-        // --- Moteur de recherche global en direct sur Supabase ---
-        async function runSearch(query) {
-            const cleanQuery = query.trim();
-
-            if (cleanQuery === '') {
-                closeDrawer();
-                return;
-            }
-
-            const { data: matchedQuestions, error } = await supabase
-                .from('questions')
-                .select(`
-                    id,
-                    title,
-                    content,
-                    subcategories (
-                        name,
-                        categories (
-                            id,
-                            title
-                        )
-                    )
-                `)
-                .or(`title.ilike.%${cleanQuery}%,content.ilike.%${cleanQuery}%`);
-
-            if (error) {
-                console.error('Erreur de recherche :', error);
-                return;
-            }
-
-            resultsCount.textContent = matchedQuestions.length;
-            drawerContent.innerHTML = '';
-
-            if (matchedQuestions.length === 0) {
-                drawerContent.innerHTML = `
-                    <div class="no-results">
-                        <p>Aucun mystère ne correspond à votre recherche.</p>
-                    </div>
-                `;
-            } else {
-                matchedQuestions.forEach(q => {
-                    const categoryId = q.subcategories?.categories?.id;
-                    const categoryName = q.subcategories?.categories?.title || 'Non spécifié';
-                    const subcategoryName = q.subcategories?.name || 'Non spécifié';
-
-                    const card = document.createElement('div');
-                    card.className = 'question-card';
-                    card.style.cursor = 'pointer';
-                    
-                    // Permet de cliquer sur un résultat de recherche globale pour être redirigé vers la bonne catégorie
-                    card.addEventListener('click', () => {
-                        if (categoryId) {
-                            window.location.href = `categorie.html?id=${categoryId}`;
-                        }
-                    });
-
-                    card.innerHTML = `
-                        <div class="question-badges">
-                            <span class="q-badge badge-cat">${categoryName}</span>
-                            <span class="q-badge badge-subcat">${subcategoryName}</span>
-                        </div>
-                        <h4>${q.title}</h4>
-                        <p>${q.content || ''}</p>
-                    `;
-                    drawerContent.appendChild(card);
-                });
-            }
-
-            openDrawer();
-        }
-
-        // Écouteurs d'événements
-        searchInput.addEventListener('input', (e) => {
-            runSearch(e.target.value);
-        });
-
-        closeBtn.addEventListener('click', closeDrawer);
+        document.getElementById('close-drawer').addEventListener('click', closeDrawer);
         overlay.addEventListener('click', closeDrawer);
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeDrawer();
-        });
     </script>
 </body>
 </html>
