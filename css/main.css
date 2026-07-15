@@ -2,27 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght=300..700&family=Lexend:wght=300..900&display=swap');
 
-
 :root {
     --bg-labo: #0f172a;
-    --text-light: #f8fafc;
-    /* Vos autres variables de couleur ici */
-}
-
-body {
-    font-family: 'Lexend', sans-serif;
-    background-color: var(--bg-labo);
-    color: var(--text-light);
-    margin: 0;
-    padding: 20px;
-    min-height: 100vh;
-}
-
-/* Ajoutez ici les styles du Header global, du Footer, ou des boutons génériques */
-
-:root {
-    --bg-labo: #0f172a;
-    /* Fond sombre général */
     --text-light: #f1f5f9;
     --accent-purple: #a29bfe;
     --accent-cosmic: #b39ddb;
@@ -52,6 +33,7 @@ body {
     align-items: center;
 }
 
+/* --- Header --- */
 header {
     text-align: center;
     padding: 60px 20px 40px 20px;
@@ -67,17 +49,9 @@ header h1 {
     text-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-header h1 span {
-    color: var(--accent-purple);
-}
+header h1 span { color: var(--accent-purple); }
 
-header p {
-    font-size: 1.2rem;
-    color: #cbd5e1;
-    line-height: 1.6;
-}
-
-/* --- Style de la barre de recherche --- */
+/* --- Barre de recherche --- */
 .search-container {
     max-width: 550px;
     margin: 30px auto 0 auto;
@@ -96,19 +70,9 @@ header p {
     color: var(--text-light);
     outline: none;
     transition: all 0.3s ease;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
 
-.search-input::placeholder {
-    color: #64748b;
-}
-
-.search-input:focus {
-    border-color: var(--accent-purple);
-    box-shadow: 0 0 15px rgba(162, 155, 254, 0.3);
-    background-color: rgba(255, 255, 255, 0.08);
-}
-
+/* --- Grille de catégories --- */
 .grid-categories {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -116,7 +80,6 @@ header p {
     max-width: 1400px;
     width: 100%;
     margin: 20px auto;
-    padding: 20px;
 }
 
 .category-card {
@@ -124,272 +87,68 @@ header p {
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 35px;
     overflow: hidden;
-    text-decoration: none;
-    color: inherit;
-    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s, border-color 0.3s, background-color 0.3s;
-    display: flex;
-    flex-direction: column;
     cursor: pointer;
+    transition: transform 0.3s ease;
 }
 
-.category-card:hover {
-    transform: translateY(-8px);
-    background: var(--card-hover-bg);
-}
+.category-card:hover { transform: translateY(-8px); background: var(--card-hover-bg); }
 
-/* Styles spécifiques pour chaque carte */
-.category-card.inv-theme:hover {
-    box-shadow: 0 15px 30px rgba(162, 155, 254, 0.15);
-    border-color: var(--accent-purple);
-}
-
-.category-card.aud-theme:hover {
-    box-shadow: 0 15px 30px rgba(179, 157, 219, 0.15);
-    border-color: var(--accent-cosmic);
-}
-
-.category-card.soi-theme:hover {
-    box-shadow: 0 15px 30px rgba(110, 231, 183, 0.15);
-    border-color: var(--accent-green);
-}
-
-.category-card.world-theme:hover {
-    box-shadow: 0 15px 30px rgba(255, 159, 67, 0.15);
-    border-color: var(--accent-world);
-}
-
-.category-card.ave-theme:hover {
-    box-shadow: 0 15px 30px rgba(6, 182, 212, 0.15);
-    border-color: var(--accent-cyan);
-}
-
-.category-card.aut-theme:hover {
-    box-shadow: 0 15px 30px rgba(244, 63, 94, 0.15);
-    border-color: var(--accent-pink);
-}
-
-.category-card.cro-theme:hover {
-    box-shadow: 0 15px 30px rgba(245, 158, 11, 0.15);
-    border-color: var(--accent-gold);
-}
-
-.card-image-wrapper {
-    position: relative;
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-    background: #1e293b;
-}
-
-.category-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.category-card:hover img {
-    transform: scale(1.05);
-}
-
-.card-body {
-    padding: 25px;
-    text-align: center;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.card-body h2 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 1.7rem;
-    margin-bottom: 12px;
-    transition: color 0.3s;
-}
-
-.inv-theme .card-body h2 {
-    color: var(--accent-purple);
-}
-
-.aud-theme .card-body h2 {
-    color: var(--accent-cosmic);
-}
-
-.soi-theme .card-body h2 {
-    color: var(--accent-green);
-}
-
-.world-theme .card-body h2 {
-    color: var(--accent-world);
-}
-
-.ave-theme .card-body h2 {
-    color: var(--accent-cyan);
-}
-
-.aut-theme .card-body h2 {
-    color: var(--accent-pink);
-}
-
-.cro-theme .card-body h2 {
-    color: var(--accent-gold);
-}
-
-.card-body p {
-    font-size: 1rem;
-    color: #94a3b8;
-    line-height: 1.5;
-}
-
-footer {
-    margin-top: auto;
-    padding: 40px 20px 20px 20px;
-    font-size: 0.9rem;
-    color: #64748b;
-    text-align: center;
-}
-
-/* --- Style du Drawer (Panneau Latéral) & Overlay --- */
+/* --- Style du Drawer (Panneau Latéral) --- */
 .drawer-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(15, 23, 42, 0.7);
     backdrop-filter: blur(4px);
-    z-index: 999;
-    display: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
+    z-index: 999; display: none; opacity: 0;
 }
-
-.drawer-overlay.active {
-    display: block;
-    opacity: 1;
-}
+.drawer-overlay.active { display: block; opacity: 1; }
 
 .drawer {
-    position: fixed;
-    top: 0;
-    right: -450px;
-    width: 420px;
-    max-width: 100%;
-    height: 100%;
+    position: fixed; top: 0; right: -450px; width: 420px; max-width: 100%; height: 100%;
     background-color: #111827;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
     transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
+    z-index: 1000; display: flex; flex-direction: column;
 }
-
-.drawer.open {
-    right: 0;
-}
+.drawer.open { right: 0; }
 
 .drawer-header {
-    padding: 24px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #0f172a;
+    padding: 24px; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex; justify-content: space-between; align-items: center;
 }
 
-.drawer-header h3 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 1.4rem;
+.drawer-controls { display: flex; gap: 10px; padding: 15px 24px; }
+
+#sort-date-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     color: var(--text-light);
-}
-
-.drawer-close-btn {
-    background: none;
-    border: none;
-    color: #64748b;
-    font-size: 2rem;
+    padding: 8px 16px;
+    border-radius: 20px;
     cursor: pointer;
-    transition: color 0.2s;
 }
 
-.drawer-close-btn:hover {
-    color: var(--text-light);
-}
-
-.drawer-results {
-    padding: 24px;
-    overflow-y: auto;
-    flex-grow: 1;
-}
-
-/* Cartes de questions dans le Drawer */
+/* --- Cartes de questions dans le Drawer --- */
 .question-card {
     background-color: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     padding: 20px;
-    margin-bottom: 20px;
-    transition: border-color 0.2s, background-color 0.2s;
+    margin: 20px;
 }
 
-.question-card:hover {
-    border-color: var(--accent-purple);
-    background-color: rgba(255, 255, 255, 0.05);
+.meta-tags {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px;
 }
 
-.question-badges {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
-    flex-wrap: wrap;
-}
-
-.q-badge {
-    font-size: 10px;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 4px 10px;
-    border-radius: 20px;
-}
-
-.badge-cat {
-    background-color: rgba(162, 155, 254, 0.15);
-    color: var(--accent-purple);
-    border: 1px solid rgba(162, 155, 254, 0.3);
-}
-
-.badge-subcat {
-    background-color: rgba(110, 231, 183, 0.15);
-    color: var(--accent-green);
-    border: 1px solid rgba(110, 231, 183, 0.3);
-}
-
-.question-card h4 {
-    font-family: 'Fredoka', sans-serif;
-    font-size: 1.15rem;
-    margin-bottom: 10px;
-    color: var(--text-light);
-}
-
-.question-card p {
-    font-size: 0.95rem;
+.badge {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
     color: #94a3b8;
-    line-height: 1.5;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.no-results {
-    text-align: center;
-    color: #64748b;
-    margin-top: 50px;
-    font-size: 1rem;
-}
-
-.loading-text {
-    grid-column: 1 / -1;
-    text-align: center;
-    font-size: 1.2rem;
-    color: #64748b;
-    padding: 40px;
+.drawer-close-btn {
+    background: none; border: none; color: #64748b; cursor: pointer; font-size: 1rem;
 }

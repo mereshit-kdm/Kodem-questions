@@ -141,12 +141,25 @@
             });
         }
 
-        async function openDrawer(subId) {
-            drawer.classList.add('open');
-            overlay.classList.add('active');
-            const { data } = await supabase.from('questions').select('*').eq('subcategory_id', subId);
-            drawerContent.innerHTML = (data || []).map(q => `<h4 class="question-item">${q.title}</h4>`).join('');
-        }
+async function openDrawer(subId) {
+    drawer.classList.add('open');
+    overlay.classList.add('active');
+    
+    // Assurez-vous que votre requête Supabase récupère bien ces colonnes !
+    const { data } = await supabase.from('questions').select('*').eq('subcategory_id', subId);
+    
+    drawerContent.innerHTML = (data || []).map(q => `
+        <div class="question-card" style="border-bottom: 1px solid #333; padding: 15px 0;">
+            <p style="font-weight: bold; margin-bottom: 10px;">${q.title}</p>
+            <div class="meta-tags" style="display: flex; flex-wrap: wrap; gap: 5px;">
+                <span class="badge">📅 Publié : ${q.published_date || 'N/A'}</span>
+                ${q.source ? `<span class="badge">👤 Source : ${q.source}</span>` : ''}
+                ${q.theme ? `<span class="badge">🏷️ Thème : ${q.theme}</span>` : ''}
+            </div>
+        </div>
+    `).join('');
+}
+
 
         function closeDrawer() {
             drawer.classList.remove('open');
